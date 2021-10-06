@@ -1,0 +1,24 @@
+/*!
+ *  Hoja de Estilos en cascada Versión3
+ *  Grupo 7 Uninorte
+ */
+
+.logo{
+    margin-bottom: 20 px;
+    width:70 px;
+    height:100 px;
+}
+.user{
+    width:10 px;
+    height:20 px;    
+}
+.background{
+    background-color: rgb(121, 118, 118);
+}
+.backgroundNav{
+    background-color: rgb(241, 242, 243);
+    margin-top: 20px;
+}
+.contenido{
+    margin-left: 20px;
+}
