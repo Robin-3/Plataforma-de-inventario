@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Optional JavaScript-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href={{url_for('static', filename='css/css.css')}}>
+    <title>Programa Inventarios Aston Martin</title>
+  </head>
+  <body>
+    <div class="background">
+      <div class="row align-items-start">
+        <div class="container col-2 backgroundNav">
+          <br>
+          <img src={{url_for('static', filename='img/logo.png')}} class="img-fluid rounded" alt="Programa Inventarios"/>
+          <ul class="list-group">
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg">DASHBOARD</button>
+            <br>
+            <button type="button" class="btn btn-success btn-lg">USUARIOS</button>
+            <br>
+            <button type="button" class="btn btn-success btn-lg">PRODUCTOS</button>
+            <br>
+            <button type="button" class="btn btn-success btn-lg">PROVEEDORES</button>
+            <br>
+            <button type="button" class="btn btn-success btn-lg">CERRAR SESIÓN</button>
+            <br><br><br>
+            <button type="button" class="btn btn-success btn-lg">AYUDA</button>
+            <br>
+          </ul>
+        </div>
+        <div class="container col-9 backgroundNav contenido">
+          <form class="d-flex">
+            <h1 class="display-5 ">DASHBOARD</h1>
+          </form>
+          <!-- Inicia Section 1 -->
+          <section class="container my-5">
+            <!-- Inicia Cards -->
+            <div class="card-deck">
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                    <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/imagenDashProductos.jpg')}} alt="Productos"/></a>
+                    <div class="card-body">
+                      <h5 class="card-title text-center">CONSULTA DE PRODUCTOS</h5>
+                      <p class="card-text text-justify">Consulta general de productos disponibles en Aston Martin.</p>
+                      <a href="#">
+                        <button class="btn btn-info">Ir a la Consulta</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                    <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/imagenDashexistencias.jpg')}} alt="Existencias"/></a>
+                    <div class="card-body">
+                      <h5 class="card-title text-center">CONSULTA DE EXISTENCIAS</h5>
+                      <p class="card-text text-justify">Consulta de existencias del inventario general de la bodega.</p>
+                      <a href="#">
+                        <button class="btn btn-info">Ir a la Consulta</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Termina Cards -->
+          </section>
+          <!-- Termina Section 1 -->
+          <!-- Inicia Section 2 -->
+          <section class="container my-5">
+            <!-- Inicia Cards -->
+            <div class="card-deck">
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                    <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/Dashproveerodes.jpg')}} alt="PROVEEDORES"/></a>
+                    <div class="card-body">
+                      <h5 class="card-title text-center">INFORME DE PROVEEDORES</h5>
+                      <p class="card-text text-justify">Revisar los productos asignados a cada proveedor.</p>
+                      <a href="#">
+                        <button class="btn btn-info">Ir al Informe</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                    <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/Dashusuarios.png')}} alt="Usuarios del Sistema"/></a>
+                    <div class="card-body">
+                      <h5 class="card-title text-center">INFORME DE USUARIOS DEL SISTEMA</h5>
+                      <p class="card-text text-justify">Informe de usuarios Activos del sistema.</p>
+                      <a href="#">
+                        <button class="btn btn-info">Ir al Informe</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Termina Cards -->
+          </section>
+          <!-- Termina Section 1 -->
+        </div>
+      </div>
+  </body>
+</html>
+
