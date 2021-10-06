@@ -14,7 +14,8 @@
   <body>
     <div class="background">
       <div class="row align-items-start">
-        <div class="container col-2 backgroundNav">
+        <!-- Comienza la barra de Navegación -->
+        <div class="container col-2 sticky-top backgroundNav">
           <br>
           <img src={{url_for('static', filename='img/logo.png')}} class="img-fluid rounded" alt="Programa Inventarios"/>
           <ul class="list-group">
@@ -28,11 +29,9 @@
             <button type="button" class="btn btn-success btn-lg">PROVEEDORES</button>
             <br>
             <button type="button" class="btn btn-success btn-lg">CERRAR SESIÓN</button>
-            <br><br><br>
-            <button type="button" class="btn btn-success btn-lg">AYUDA</button>
             <br>
           </ul>
-        </div>
+        </div><!-- Termina la barra de Navegación -->
         <div class="container col-9 backgroundNav contenido">
           <form class="d-flex">
             <h1 class="display-5 ">DASHBOARD</h1>
