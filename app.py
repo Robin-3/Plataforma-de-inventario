@@ -10,3 +10,14 @@ def index():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/usuarios')
+def usuarios():
+    return render_template('usuarios.html')
+
+@app.route('/productos')
+def productos():
+    return render_template('productos.html')
+
+@app.route('/proveedores')
+def proveedores():
+    return render_template('proveedores.html')

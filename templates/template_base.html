@@ -20,13 +20,21 @@
                     <img src={{url_for('static', filename='img/logo.png')}} class="img-fluid rounded" alt="Programa Inventarios"/>
                     <ul class="list-group">
                         <br><br>
-                        <button type="button" class="btn btn-success btn-lg">DASHBOARD</button>
+                        <a href={{url_for('dashboard')}}>
+                            <button type="button" class="btn btn-success btn-lg">DASHBOARD</button>
+                        </a>
                         <br>
-                        <button type="button" class="btn btn-success btn-lg">USUARIOS</button>
+                        <a href={{url_for('usuarios')}}>
+                            <button type="button" class="btn btn-success btn-lg">USUARIOS</button>
+                        </a>
                         <br>
-                        <button type="button" class="btn btn-success btn-lg">PRODUCTOS</button>
+                        <a href={{url_for('productos')}}>
+                            <button type="button" class="btn btn-success btn-lg">PRODUCTOS</button>
+                        </a>
                         <br>
-                        <button type="button" class="btn btn-success btn-lg">PROVEEDORES</button>
+                        <a href={{url_for('proveedores')}}>
+                            <button type="button" class="btn btn-success btn-lg">PROVEEDORES</button>
+                        </a>
                         <br>
                         <button type="button" class="btn btn-success btn-lg">CERRAR SESIÓN</button>
                         <br>
