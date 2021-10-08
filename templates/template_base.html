@@ -23,14 +23,14 @@
                         <a href={{url_for('dashboard')}} button type="button" class="btn btn-success btn-lg">DASHBOARD</button></a>
                         <br>
                         <div class="btn-group" role="group">
-                            <a href={{url_for('usuarios')}} button id="btnGroupDrop1" type="button" class="btn btn btn-success btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="btnGroupDrop1" type="button" class="btn btn btn-success btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                               USUARIOS
-                            </button></a>
-                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" href={{url_for('usuarios')}}>Consulta</a></li>
-                                <li><a class="dropdown-item" href="#">Agregar</a></li>
-                                <li><a class="dropdown-item" href="#">Editar</a></li>
-                                <li><a class="dropdown-item" href="#">Eliminar</a></li>
+                                <li><a class="dropdown-item" href={{url_for('usuariosAgregar')}}>Agregar</a></li>
+                                <li><a class="dropdown-item" href={{url_for('usuariosEditar')}}>Editar</a></li>
+                                <li><a class="dropdown-item" href={{url_for('usuariosEliminar')}}>Eliminar</a></li>
                             </ul>
                           </div>
                         <br>

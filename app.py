@@ -14,6 +14,18 @@ def dashboard():
 def usuarios():
     return render_template('usuarios.html')
 
+@app.route('/usuariosAgregar')
+def usuariosAgregar():
+    return render_template('usuariosAgregar.html')
+
+@app.route('/usuariosEditar')
+def usuariosEditar():
+    return render_template('usuariosEditar.html')
+
+@app.route('/usuariosEliminar')
+def usuariosEliminar():
+    return render_template('usuariosEliminar.html')
+
 @app.route('/productos')
 def productos():
     return render_template('productos.html')
