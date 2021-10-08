@@ -24,3 +24,15 @@
     text-align: center;
 }
 
+.dropdown-menu {
+    background-color: rgb(59, 136, 58);
+    font-size:larger;
+}
+.dropdown-menu a {
+    color: white;
+}
+
+.dropdown-menu a:hover {
+    color: rgb(243, 237, 237);
+    background-color: #425f0c;
+}

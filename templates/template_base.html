@@ -22,11 +22,11 @@
                         <br><br>
                         <a href={{url_for('dashboard')}} button type="button" class="btn btn-success btn-lg">DASHBOARD</button></a>
                         <br>
-                        <div class="btn-group" role="group">
+                        <div class="btn-group dropend" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn btn-success btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                               USUARIOS
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" href={{url_for('usuarios')}}>Consulta</a></li>
                                 <li><a class="dropdown-item" href={{url_for('usuariosAgregar')}}>Agregar</a></li>
                                 <li><a class="dropdown-item" href={{url_for('usuariosEditar')}}>Editar</a></li>
@@ -34,11 +34,11 @@
                             </ul>
                           </div>
                         <br>
-                        <div class="btn-group" role="group">
+                        <div class="btn-group dropend" role="group">
                             <button id="btnGroupDrop2" type="button" class="btn btn btn-success btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                               PRODUCTOS
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" href={{url_for('productos')}}>Consulta</a></li>
                                 <li><a class="dropdown-item" href={{url_for('productosAgregar')}}>Agregar</a></li>
                                 <li><a class="dropdown-item" href={{url_for('productosEditar')}}>Editar</a></li>
