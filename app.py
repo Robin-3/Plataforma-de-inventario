@@ -30,6 +30,18 @@ def usuariosEliminar():
 def productos():
     return render_template('productos.html')
 
+@app.route('/productosAgregar')
+def productosAgregar():
+    return render_template('productosAgregar.html')
+
+@app.route('/productosEditar')
+def productosEditar():
+    return render_template('productosEditar.html')
+
+@app.route('/productosEliminar')
+def productosEliminar():
+    return render_template('productosEliminar.html')
+
 @app.route('/proveedores')
 def proveedores():
     return render_template('proveedores.html')

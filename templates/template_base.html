@@ -34,7 +34,17 @@
                             </ul>
                           </div>
                         <br>
-                        <a href={{url_for('productos')}} button type="button" class="btn btn-success btn-lg">PRODUCTOS</button></a>
+                        <div class="btn-group" role="group">
+                            <button id="btnGroupDrop2" type="button" class="btn btn btn-success btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                              PRODUCTOS
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href={{url_for('productos')}}>Consulta</a></li>
+                                <li><a class="dropdown-item" href={{url_for('productosAgregar')}}>Agregar</a></li>
+                                <li><a class="dropdown-item" href={{url_for('productosEditar')}}>Editar</a></li>
+                                <li><a class="dropdown-item" href={{url_for('productosEliminar')}}>Eliminar</a></li>
+                            </ul>
+                          </div>
                         <br>
                         <a href={{url_for('proveedores')}} button type="button" class="btn btn-success btn-lg">PROVEEDORES</button></a>
                         <br>
