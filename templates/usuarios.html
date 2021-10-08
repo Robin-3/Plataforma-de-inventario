@@ -4,4 +4,116 @@
 
 {% block content %}
 <h3>CONSULTA DE USUARIOS</h3>
+  <!-- Inicia Section 1 -->
+  <section class="container my-5">
+    <!-- Inicia Cards 1-->
+      <div class="card-deck">
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <div class="card">
+              <a href="#">
+                  <img class="card-img-top" src={{url_for('static', filename='img/Usuarios/AnaDiaz.jpg')}} alt="Usuarios"/>
+              </a>
+              <div class="card-body">
+                <h5 class="card-title text-center">Ana Díaz</h5>
+                <p class="card-text text-justify">ID Usuario: 1023456876</p>
+                <p class="card-text text-justify">Rol Usuario: Usuario Final</p>
+                <a href="#">
+                  <button class="btn btn-info">Más Información</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-2">
+            <div class="card">
+              <a href="#">
+                  <img class="card-img-top" src={{url_for('static', filename='img/Usuarios/CarlosPaez.jpg')}} alt="Usuarios"/>
+              </a>
+              <div class="card-body">
+                <h5 class="card-title text-center">Carlos Paez</h5>
+                <p class="card-text text-justify">ID Usuario: 23456789</p>
+                <p class="card-text text-justify">Rol Usuario: Administrador</p>
+                <a href="#">
+                  <button class="btn btn-info">Más Información</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-2">
+              <div class="card">
+                <a href="#">
+                    <img class="card-img-top" src={{url_for('static', filename='img/Usuarios/MilenaGarcia.jpg')}} alt="Usuarios"/>
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title text-center">Milena García</h5>
+                  <p class="card-text text-justify">ID Usuario: 98764523</p>
+                  <p class="card-text text-justify">Rol Usuario: Súper Administrador</p>
+                  <a href="#">
+                    <button class="btn btn-info">Más Información</button>
+                  </a>
+                </div>
+              </div>
+          </div>
+          <div class="card-deck">
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <div class="card">
+                  <a href="#">
+                      <img class="card-img-top" src={{url_for('static', filename='img/Usuarios/PedroRincon.jpg')}} alt="Usuarios"/>
+                  </a>
+                  <div class="card-body">
+                    <h5 class="card-title text-center">Pedro Rincón</h5>
+                    <p class="card-text text-justify">ID Usuario: 7799654</p>
+                    <p class="card-text text-justify">Rol Usuario: Súper Administrador</p>
+                    <a href="#">
+                      <button class="btn btn-info">Más Información</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-2">
+                <div class="card">
+                  <a href="#">
+                      <img class="card-img-top" src={{url_for('static', filename='img/Usuarios/RosaHernandez.jpg')}} alt="Usuarios"/>
+                  </a>
+                  <div class="card-body">
+                    <h5 class="card-title text-center">Rosa Hernández</h5>
+                    <p class="card-text text-justify">ID Usuario: 6545321</p>
+                    <p class="card-text text-justify">Rol Usuario: Usuario Final</p>
+                    <a href="#">
+                      <button class="btn btn-info">Más Información</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-2">
+                  <div class="card">
+                    <a href="#">
+                        <img class="card-img-top" src={{url_for('static', filename='img/Usuarios/YesidRodriguez.jpg')}} alt="Usuarios"/>
+                    </a>
+                    <div class="card-body">
+                      <h5 class="card-title text-center">Yesid Rodríguez</h5>
+                      <p class="card-text text-justify">ID Usuario: 95341236</p>
+                      <p class="card-text text-justify">Rol Usuario: Usuario Final</p>
+                      <a href="#">
+                        <button class="btn btn-info">Más Información</button>
+                      </a>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix">
+                <div><br></div>  
+				<div class="hint-text">Mostrando <b>6</b> de <b>6</b> entradas</div>
+                <div><br></div>
+				<ul class="pagination justify-content-center" style = "text-align: left">
+					<li class="page-item disabled"><a href="#" class="page-link">Anterior</a></li>
+					<li class="page-item active"><a href="#" class="page-link">1</a></li>
+					<li class="page-item"><a href="#" class="page-link">2</a></li>
+					<li class="page-item"><a href="#" class="page-link">3</a></li>
+					<li class="page-item"><a href="#" class="page-link">4</a></li>
+					<li class="page-item"><a href="#" class="page-link">5</a></li>
+					<li class="page-item"><a href="#" class="page-link">Siguiente</a></li>
+				</ul>
+			</div>
+    </section>
 {% endblock %}
