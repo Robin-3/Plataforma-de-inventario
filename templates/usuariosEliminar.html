@@ -4,4 +4,57 @@
 
 {% block content %}
 <h3>ELIMINAR USUARIOS</h3>
+<div><br><br></div>
+
+<table class="table table-hover table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="col">idUsuario</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="row">1023456876</th>
+            <td>Ana Díaz</td>
+            <td>Usuario Final</td>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="row">23456789</th>
+            <td>Carlos Paez</td>
+            <td>Administrador</td>
+        </tr>
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="row">98764523</th>
+            <td>Milena García</td>
+            <td>Súper Administrador</td>
+        </tr>
+    </tbody>
+  </table>
 {% endblock %}
