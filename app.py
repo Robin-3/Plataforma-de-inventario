@@ -45,3 +45,15 @@ def productosEliminar():
 @app.route('/proveedores')
 def proveedores():
     return render_template('proveedores.html')
+
+@app.route('/proveedoresAgregar')
+def proveedoresAgregar():
+    return render_template('proveedoresAgregar.html')
+
+@app.route('/proveedoresEditar')
+def proveedoresEditar():
+    return render_template('proveedoresEditar.html')
+
+@app.route('/proveedoresEliminar')
+def proveedoresEliminar():
+    return render_template('proveedoresEliminar.html')

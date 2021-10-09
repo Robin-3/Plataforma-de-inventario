@@ -1,0 +1,62 @@
+{% extends "template_base.html" %}
+
+{% block titulo %} PROVEEDORES {% endblock %}
+
+{% block content %}
+<h3>ELIMINAR PROVEEDORES</h3>
+<div><br><br></div>
+
+<table class="table table-hover table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="col">Id Proveedores</th>
+            <th scope="col">Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="row">54685886</th>
+            <td>Jesús Reales</td>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="row">8965874</th>
+            <td>Josue Paz</td>
+        </tr>
+        <tr>
+            <th>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                </span>
+            </th>
+            <th scope="row">6545321</th>
+            <td>Milagro Zárate</td>
+        </tr>
+    </tbody>
+  </table>
+  <div><br></div>
+  <div>
+      <button type="button" class="btn btn-success">Eliminar</button>
+      <button type="button" class="btn btn-success">Cancelar</button>
+  </div>
+  <div><br><br><br></div>
+{% endblock %}

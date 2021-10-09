@@ -1,0 +1,43 @@
+{% extends "template_base.html" %}
+
+{% block titulo %} PROVEEDORES {% endblock %}
+
+{% block content %}
+<h3>AGREGAR PROVEEDORES</h3>
+<br><br>
+<form action="">
+    <div class="container text-center col-sm-9">
+        <div class="mb-3 row">
+            <label for="idProveedorlabel" class="col-sm-4 col-form-label">Id Proveedor</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="idProveedor">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Nombrelabel" class="col-sm-4 col-form-label">Nombre</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="nombreProveedor">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Passwordlabel" class="col-sm-4 col-form-label">Password</label>
+            <div class="col-sm-8">
+                <input type="password" class="form-control" id="password">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="confirmPasswordlabel" class="col-sm-4 col-form-label">Confirmar Password</label>
+            <div class="col-sm-8">
+                <input type="confirmpassword" class="form-control" id="confirmpassword">
+            </div>
+        </div>
+        </div>
+        <div><br></div>
+        <div>
+            <button type="button" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-success">Cancelar</button>
+        </div>
+        <div><br><br><br></div>
+    </div>
+</form>
+{% endblock %}
