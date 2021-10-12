@@ -5,7 +5,7 @@
 {% block content %}
 <h3>AGREGAR USUARIOS</h3>
 <br><br>
-<form action="">
+<form action={{url_for('usuariosAgregar')}} method="post">
     <div class="container text-center col-sm-9">
         <div class="mb-3 row">
             <label for="idUsuariolabel" class="col-sm-4 col-form-label">Id Usuario</label>
@@ -44,8 +44,7 @@
         </div>
         <div><br></div>
         <div>
-            <button type="button" class="btn btn-success">Guardar</button>
-            <button type="button" class="btn btn-success">Cancelar</button>
+            <input type="submit" class="btn btn-success" value="Guardar"> 
         </div>
         <div><br><br><br></div>
     </div>
