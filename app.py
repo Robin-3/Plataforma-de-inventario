@@ -31,6 +31,12 @@ def usuariosEditar():
         return "Aquí se van a modificar los datos del usuario seleccionado"
     return render_template('usuariosEditar.html')
 
+@app.route('/usuarios/editarusuario', methods=['GET','PUT'])
+def usuariosEditarusuario():
+    if request.method == "PUT":
+        return "Aquí se van a modificar los datos del usuario seleccionado"
+    return render_template('usuariosEditarusuario.html')
+
 @app.route('/usuarios/eliminar', methods=['GET','DELETE'])
 def usuariosEliminar():
     return render_template('usuariosEliminar.html')
