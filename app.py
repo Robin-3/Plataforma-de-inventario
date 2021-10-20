@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+from controladores.CRUDUsuario import ConsultarUsuarios
+from miscelaneos.misc import ListaATabla
 
 app = Flask(__name__)
 
@@ -12,7 +14,10 @@ def dashboard():
 
 @app.route('/usuarios', methods=['GET'])
 def usuarios():
-    return render_template('usuarios.html')
+    usuarios = []
+    for u in ConsultarUsuarios():
+        usuarios.append(eval(u.__repr__()))
+    return render_template('usuarios.html', usuarios=ListaATabla(usuarios, 3))
 
 @app.route('/usuarios/agregar', methods=['GET','POST'])
 def usuariosAgregar():
