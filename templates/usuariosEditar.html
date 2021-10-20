@@ -20,6 +20,16 @@
         </tr>
     </thead>
     <tbody>
+        <!--Vamos a traer de la consulta CRUDUsuario de los usuarios de la Base de datos -->
+        {% for usu in usuarios %}
+        <tr>
+            <td>{% print(usu[0]) %}</td>
+            <td>{% print(usu[1]) %}</td>
+            <td>{% print(usu[2]) %}</td>
+            <td>{% print(usu[3]) %}</td>
+            <td>{% print(usu[4]) %}</td>
+        </tr>
+        {% endfor %}
         <tr>
             <th>
                 <span class="custom-checkbox">
@@ -27,7 +37,7 @@
                     <label for="selectAll"></label>
                 </span>
             </th>
-            <th scope="row">1023456876</th>
+            <th scope="row">1023456876</th> 
             <td>Ana Díaz</td>
             <td>Usuario Final</td>
             </td>
@@ -58,7 +68,7 @@
   </table>
   <div><br></div>
   <div>
-      <input type="submit" class="btn btn-success" value="Editar">
+      <a href={{url_for('usuariosEditarusuario')}} <button type="button" class="btn btn-success">Editar Usuario</button></a>
   </div>
   <div><br><br><br></div>
 {% endblock %}
