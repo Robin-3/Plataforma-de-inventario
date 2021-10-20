@@ -18,6 +18,14 @@ def ImprimirListaObjetos(lista: list):
 if __name__ == '__main__':
 
     roles: list[Rol] = ObtenerRoles()
+    AgregarUsuario(Usuario(1023456876, 'Ana Díaz', '1'), roles[0])
+    AgregarUsuario(Usuario(2345678, 'Carlos Paez', '2'), roles[0])
+    AgregarUsuario(Usuario(98764523, 'Milena García', '3'), roles[1])
+    AgregarUsuario(Usuario(7799654, 'Pedro Rincón', '4'), roles[1])
+    AgregarUsuario(Usuario(6545321, 'Rosa Hernández', '5'), roles[2])
+    AgregarUsuario(Usuario(95341236, 'Yesid Rodríguez', '6'), roles[2])
+
+    '''roles: list[Rol] = ObtenerRoles()
     print("--------------------ROLES: MOSTRAR---------")
     ImprimirListaObjetos(ObtenerRoles())
 
@@ -98,5 +106,4 @@ if __name__ == '__main__':
     print("--------------PROVEEDORES: ELIMINAR--------")
     # Necesita in id
     EliminarProveedor(4)
-    ImprimirListaObjetos(ConsultarProvedores())
-
+    ImprimirListaObjetos(ConsultarProvedores())'''
