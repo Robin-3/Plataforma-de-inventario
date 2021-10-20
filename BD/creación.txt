@@ -1,0 +1,48 @@
+create database inventario;
+
+use inventario;
+
+CREATE TABLE `producto` (
+  `id_producto` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_producto` varchar(30) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `calificacion` float DEFAULT NULL,
+  `cantidad_minima_requerida` int(11) DEFAULT NULL,
+  `cantidad_disponible_en_bodega` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_producto`)
+);
+
+CREATE TABLE `proveedor` (
+  `id_proveedor` int(11) NOT NULL,
+  `nombre` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_proveedor`)
+);
+
+CREATE TABLE `producto_proveedor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_producto` int(11) DEFAULT NULL,
+  `id_proveedor` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_producto` (`id_producto`),
+  KEY `id_proveedor` (`id_proveedor`),
+  CONSTRAINT `producto_proveedor_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`),
+  CONSTRAINT `producto_proveedor_ibfk_2` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id_proveedor`)
+);
+
+CREATE TABLE `rol` (
+  `id_rol` int(11) NOT NULL,
+  `nombre` varchar(19) DEFAULT NULL,
+  PRIMARY KEY (`id_rol`)
+);
+
+INSERT INTO `rol` VALUES (0,'Usuario final'),(1,'Administrador'),(2,'Super Administrador');
+
+CREATE TABLE `usuario` (
+  `id_usuario` int(11) NOT NULL,
+  `nombre_usuario` varchar(20) DEFAULT NULL,
+  `contrasena` char(64) DEFAULT NULL,
+  `id_rol` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`),
+  KEY `id_rol` (`id_rol`),
+  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`)
+);
