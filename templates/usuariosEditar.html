@@ -21,49 +21,21 @@
     </thead>
     <tbody>
         <!--Vamos a traer de la consulta CRUDUsuario de los usuarios de la Base de datos -->
-        {% for usu in usuarios %}
-        <tr>
-            <td>{% print(usu[0]) %}</td>
-            <td>{% print(usu[1]) %}</td>
-            <td>{% print(usu[2]) %}</td>
-            <td>{% print(usu[3]) %}</td>
-            <td>{% print(usu[4]) %}</td>
-        </tr>
+        {%for usuario_fila in usuarios%}
+            {%for usuario_columna in usuario_fila%}
+                <tr>
+                    <th>
+                        <span class="custom-checkbox">
+                            <input type="radio" id="selectAll">
+                            <label for="selectAll"></label>
+                        </span>
+                    </th>
+                    <td>{{usuario_columna['id']}}</td>
+                    <td>{{usuario_columna['nombre']}}</td>            
+                    <td>{{usuario_columna['rol']}}</td>
+                </tr>
+            {% endfor %}
         {% endfor %}
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">1023456876</th> 
-            <td>Ana Díaz</td>
-            <td>Usuario Final</td>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">23456789</th>
-            <td>Carlos Paez</td>
-            <td>Administrador</td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">98764523</th>
-            <td>Milena García</td>
-            <td>Súper Administrador</td>
-        </tr>
     </tbody>
   </table>
   <div><br></div>

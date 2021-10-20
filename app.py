@@ -27,9 +27,10 @@ def usuariosAgregar():
 
 @app.route('/usuarios/editar', methods=['GET','PUT'])
 def usuariosEditar():
-    if request.method == "PUT":
-        return "Aquí se van a modificar los datos del usuario seleccionado"
-    return render_template('usuariosEditar.html')
+    usuarios = []
+    for u in ConsultarUsuarios():
+        usuarios.append(eval(u.__repr__()))
+    return render_template('usuariosEditar.html', usuarios=ListaATabla(usuarios, 3))
 
 @app.route('/usuarios/editarusuario', methods=['GET','PUT'])
 def usuariosEditarusuario():
