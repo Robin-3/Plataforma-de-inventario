@@ -1,23 +1,46 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from controladores.CRUDUsuario import ConsultarUsuarios
-from miscelaneos.misc import ListaATabla
+from miscelaneos.misc import ListaATabla, CifrarContrasena
 
 app = Flask(__name__)
+usuarios_bd = []
+
+esta_registrado = False
+
+def TraerUsuarios():
+    global usuarios_bd
+    usuarios_bd.clear()
+    for u in ConsultarUsuarios():
+        usuarios_bd.append(eval(u.__repr__()))
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-@app.route('/dashboard', methods=['GET'])
+@app.route('/dashboard', methods=['GET','POST'])
 def dashboard():
-    return render_template('dashboard.html')
+    global esta_registrado
+    esta_registrado=False
+    if request.method== "POST":
+        id_usuario=int(request.form['user'])
+        password=CifrarContrasena(request.form['password'])
+        if usuarios_bd==[]:
+            TraerUsuarios()
+        for usuario in usuarios_bd:
+            if usuario['id']==id_usuario:
+                if password == usuario['contraseña']:
+                    esta_registrado=True
+    if esta_registrado:
+        return render_template('dashboard.html')
+    else: 
+        return redirect('/')
 
 @app.route('/usuarios', methods=['GET'])
 def usuarios():
-    usuarios = []
-    for u in ConsultarUsuarios():
-        usuarios.append(eval(u.__repr__()))
-    return render_template('usuarios.html', usuarios=ListaATabla(usuarios, 3))
+    if usuarios_bd== []:
+        TraerUsuarios()
+
+    return render_template('usuarios.html', usuarios=ListaATabla(usuarios_bd, 3))
 
 @app.route('/usuarios/agregar', methods=['GET','POST'])
 def usuariosAgregar():
