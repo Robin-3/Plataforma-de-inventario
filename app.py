@@ -22,8 +22,12 @@ def dashboard():
     global esta_registrado
     esta_registrado=False
     if request.method== "POST":
-        id_usuario=int(request.form['user'])
-        password=CifrarContrasena(request.form['password'])
+        id_usuario=request.form['user']
+        password=request.form['password']
+        if id_usuario == "" and password =="":
+            return redirect('/')
+        id_usuario=int(id_usuario)
+        password=CifrarContrasena(password)
         if usuarios_bd==[]:
             TraerUsuarios()
         for usuario in usuarios_bd:
