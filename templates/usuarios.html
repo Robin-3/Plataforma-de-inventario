@@ -4,48 +4,42 @@
 
 {% block content %}
 <h3>CONSULTA DE USUARIOS</h3>
-  <!-- Inicia Section 1 -->
-  <section class="container my-5">
-    <!-- Inicia Cards 1-->
-    {%for usuario_fila in usuarios%}
-      <div class="card-deck">
-        <div class="row">
-
-          {%for usuario_columna in usuario_fila%}
-          <div class="col-md-4 mb-2">
-            <div class="card">
-              <a href="#">
-                <img class="card-img-top" src="/static/img/Usuarios/{{usuario_columna['id']}}.jpg" alt="Usuarios"/>
-              </a>
-              <div class="card-body">
-                <h5 class="card-title text-center">{{usuario_columna['nombre']}}</h5>
-                <p class="card-text text-justify">ID Usuario: {{usuario_columna['id']}}</p>
-                <p class="card-text text-justify">Rol Usuario: {{usuario_columna['rol']}}</p>
-                <a href="#">
-                  <button class="btn btn-info">Más Información</button>
-                </a>
-              </div>
-            </div>
+<!-- Inicia Section 1 -->
+<section class="container my-5">
+  <!-- Inicia Cards 1-->
+  {%for usuario_fila in usuarios%}
+  <div class="card-deck">
+    <div class="row">
+      {%for usuario_columna in usuario_fila%}
+      <div class="col-md-4 mb-2">
+        <div class="card">
+          <a href="#"><img class="card-img-top" src="/static/img/Usuarios/{{usuario_columna.id}}.jpg" alt="Usuarios"/></a>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{usuario_columna.nombre}}</h5>
+            <p class="card-text text-justify">ID Usuario: {{usuario_columna.id}}</p>
+            <p class="card-text text-justify">Rol Usuario: {{usuario_columna.rol.nombre}}</p>
+            <a href="#"><button class="btn btn-info">Más Información</button></a>
           </div>
-      {%endfor%}
         </div>
       </div>
       {%endfor%}
+    </div>
+  </div>
+  {%endfor%}
 
-
-              <div class="clearfix">
-                <div><br></div>  
-				<div class="hint-text">Mostrando <b>6</b> de <b>6</b> entradas</div>
-                <div><br></div>
-				<ul class="pagination justify-content-center" style = "text-align: left">
-					<li class="page-item disabled"><a href="#" class="page-link">Anterior</a></li>
-					<li class="page-item active"><a href="#" class="page-link">1</a></li>
-					<li class="page-item"><a href="#" class="page-link">2</a></li>
-					<li class="page-item"><a href="#" class="page-link">3</a></li>
-					<li class="page-item"><a href="#" class="page-link">4</a></li>
-					<li class="page-item"><a href="#" class="page-link">5</a></li>
-					<li class="page-item"><a href="#" class="page-link">Siguiente</a></li>
-				</ul>
-			</div>
-    </section>
+  <div class="clearfix">
+    <div><br></div>
+    <div class="hint-text">Mostrando <b>6</b> de <b>6</b> entradas</div>
+    <div><br></div>
+    <ul class="pagination justify-content-center" style = "text-align: left">
+      <li class="page-item disabled"><a href="#" class="page-link">Anterior</a></li>
+      <li class="page-item active"><a href="#" class="page-link">1</a></li>
+      <li class="page-item"><a href="#" class="page-link">2</a></li>
+      <li class="page-item"><a href="#" class="page-link">3</a></li>
+      <li class="page-item"><a href="#" class="page-link">4</a></li>
+      <li class="page-item"><a href="#" class="page-link">5</a></li>
+      <li class="page-item"><a href="#" class="page-link">Siguiente</a></li>
+    </ul>
+  </div>
+</section>
 {% endblock %}
