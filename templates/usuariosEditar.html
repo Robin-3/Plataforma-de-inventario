@@ -5,6 +5,7 @@
 {% block content %}
 <h3>EDITAR USUARIOS</h3>
 <div><br><br></div>
+<form action={{url_for('usuariosEditarusuario')}} method="POST">
 <table class="table table-hover table-striped">
     <thead class="table-dark">
         <tr>
@@ -21,26 +22,25 @@
     </thead>
     <tbody>
         <!--Vamos a traer de la consulta CRUDUsuario de los usuarios de la Base de datos -->
-        {%for usuario_fila in usuarios%}
-            {%for usuario_columna in usuario_fila%}
+        {%for usuario in usuarios%}
                 <tr>
                     <th>
                         <span class="custom-checkbox">
-                            <input type="radio" id="selectAll">
+                          <input type="radio" id="selectAll" name="id" value="{{usuario.id}}">
                             <label for="selectAll"></label>
                         </span>
                     </th>
-                    <td>{{usuario_columna['id']}}</td>
-                    <td>{{usuario_columna['nombre']}}</td>            
-                    <td>{{usuario_columna['rol']}}</td>
+                    <td>{{usuario.id}}</td>
+                    <td>{{usuario.nombre}}</td>
+                    <td>{{usuario.rol.nombre}}</td>
                 </tr>
-            {% endfor %}
         {% endfor %}
     </tbody>
   </table>
   <div><br></div>
   <div>
-      <a href={{url_for('usuariosEditarusuario')}} button type="button" class="btn btn-success">Editar Usuario</button></a>
+      <input type="submit" class="btn btn-success">
+      </form>
   </div>
   <div><br><br><br></div>
 {% endblock %}

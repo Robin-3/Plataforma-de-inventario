@@ -16,7 +16,8 @@
       <div class="row align-items-start">
         <!-- Comienza la barra de Navegación -->
         <div class="container col-2 sticky-top backgroundNav"><br>
-          <img src={{url_for('static', filename='img/logo.png')}} class="img-fluid rounded" alt="Programa Inventarios"/>
+          <img src={{url_for('static', filename='img/logo.png')}} class="img-fluid rounded" alt="Programa Inventarios"/><br><br>
+          <div class="text-center">Bienvenido: {{usuario_registrado.nombre}}</div>
           <ul class="list-group"><br><br>
             <a href={{url_for('dashboard')}} button type="button" class="btn btn-success btn-lg">DASHBOARD</button></a><br>
             {% if usuario_registrado.rol.id != 0 %}
