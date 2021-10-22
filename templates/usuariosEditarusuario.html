@@ -5,40 +5,39 @@
 {% block content %}
 <h3>EDITAR DATOS DEL USUARIOS</h3>
 <br><br>
-<form action={{url_for('usuariosEditarusuario')}} method="post">
+<form action={{url_for('usuariosEditar')}} method="post">
     <div class="container text-center col-sm-9">
         <div class="mb-3 row">
             <label for="idUsuariolabel" class="col-sm-4 col-form-label">Id Usuario</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="idUsuario">
+              <input type="text" class="form-control" name="id" id="idUsuario" value="{{usuario.id}}" readonly>
             </div>
         </div>
         <div class="mb-3 row">
             <label for="Nombrelabel" class="col-sm-4 col-form-label">Nombre</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="nombreUsuario">
+              <input type="text" class="form-control" name="nombre" id="nombreUsuario" value="{{usuario.nombre}}">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="Passwordlabel" class="col-sm-4 col-form-label">Password</label>
             <div class="col-sm-8">
-                <input type="password" class="form-control" id="password">
+              <input type="password" name="password" class="form-control" id="password">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="confirmPasswordlabel" class="col-sm-4 col-form-label">Confirmar Password</label>
             <div class="col-sm-8">
-                <input type="confirmpassword" class="form-control" id="confirmpassword">
+              <input type="password" name="password2" class="form-control" id="confirmpassword">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="Nombrelabel" class="col-sm-4 col-form-label">Rol del Usuario</label>
             <div class="col-sm-8">
-                <select class="form-select mb-3" aria-label=".form-select-lg example">
-                    <option selected>Seleccione</option>
-                    <option value="1">Usuario final</option>
-                    <option value="2">Administrador</option>
-                    <option value="3">Super Administrador</option>
+              <select class="form-select mb-3" name="rol" aria-label=".form-select-lg example">
+                <option value="0" {%if usuario.rol.id == 0%}selected{%endif%}>Usuario final</option>
+                <option value="1" {%if usuario.rol.id == 1%}selected{%endif%}>Administrador</option>
+                <option value="2" {%if usuario.rol.id == 2%}selected{%endif%}>Super Administrador</option>
                 </select>
             </div>
         </div>
