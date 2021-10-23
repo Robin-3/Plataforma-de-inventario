@@ -37,6 +37,7 @@ CREATE TABLE `rol` (
 
 INSERT INTO `rol` VALUES (0,'Usuario final'),(1,'Administrador'),(2,'Super Administrador');
 
+
 CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL,
   `nombre_usuario` varchar(20) DEFAULT NULL,

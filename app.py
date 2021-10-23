@@ -1,14 +1,17 @@
 import os
 from modelos.Usuario import Usuario
+from modelos.Proveedor import Proveedor
 from flask import Flask, render_template, request, redirect
 from controladores.CRUDRol import ObtenerRoles
 from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario
+from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor
 from miscelaneos.misc import ListaATabla, CifrarContrasena
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= './static/img'
 
 usuarios_bd = []
+proveedores_bd = []
 ROLES = ObtenerRoles()
 
 esta_registrado = False
@@ -19,6 +22,12 @@ def TraerUsuarios():
     usuarios_bd.clear()
     for u in ConsultarUsuarios():
         usuarios_bd.append(u)
+
+def TraerProveedores():
+    global proveedores_bd
+    proveedores_bd.clear()
+    for u in ConsultarProveedores():
+        proveedores_bd.append(u)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -174,14 +183,29 @@ def productosEliminar():
 
 @app.route('/proveedores', methods=['GET'])
 def proveedores():
-    global esta_registrado, usuario_registrado
+    global proveedores_bd, esta_registrado, usuario_registrado
     if esta_registrado:
-        return render_template('proveedores.html', usuario_registrado=usuario_registrado)
+        if proveedores_bd == []:
+            TraerProveedores()
+        return render_template('proveedores.html', usuario_registrado=usuario_registrado, proveedores = ListaATabla(proveedores_bd, 3))
     return redirect('/')
 
 @app.route('/proveedores/agregar', methods=['GET','POST'])
 def proveedoresAgregar():
     global esta_registrado, usuario_registrado
+    if request.method =="POST":
+        id_nuevoprov = request.form['id']
+        nombre_nuevoprov = request.form['nombre']
+        if (id_nuevoprov == '' or nombre_nuevoprov == ''):
+            return redirect('/proveedores/agregar')
+        if proveedores_bd == []:
+            TraerProveedores()
+        id_nuevoprov = int(id_nuevoprov)
+        if len([u for u in proveedores_bd if u.id == id_nuevoprov]) == 1:
+            return redirect('/proveedores/agregar')
+        AgregarProveedor(Proveedor(id_nuevoprov, nombre_nuevoprov))
+        TraerProveedores()
+        return redirect('/proveedores')
     if esta_registrado:
         return render_template('proveedoresAgregar.html', usuario_registrado=usuario_registrado)
     return redirect('/')

@@ -7,94 +7,28 @@
   <!-- Inicia Section 1 -->
   <section class="container my-5">
     <!-- Inicia Cards 1-->
+    {%for proveedor_fila in proveedores%}
       <div class="card-deck">
         <div class="row">
+          {%for proveedor_columna in proveedor_fila%}
           <div class="col-md-4 mb-2">
             <div class="card">
               <a href="#">
-                  <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/imag1.png')}} alt="Proveedores" width="190" height="190"/>
+                  <img class="card-img-top" src= "/static/img/Proveedores/{{proveedor_columna.id}}.jpg" alt="Proveedores"/>
               </a>
               <div class="card-body">
-                <h5 class="card-title text-center">Perla Paz</h5>
-                <p class="card-text text-justify">ID Proveedor: 87659874</p>
+                <h5 class="card-title text-center">{{proveedor_columna.nombre}}</h5>
+                <p class="card-text text-justify">{{proveedor_columna.id}}</p>
                 <a href="#">
                   <button class="btn btn-info">Más Información</button>
                 </a>
               </div>
             </div>
           </div>
-          <div class="col-md-4 mb-2">
-            <div class="card">
-              <a href="#">
-                  <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/imag4.png')}} alt="Proveedores" width="190" height="190"/>
-              </a>
-              <div class="card-body">
-                <h5 class="card-title text-center">DB organization</h5>
-                <p class="card-text text-justify">ID Proveedor: 8965874</p>
-                <a href="#">
-                  <button class="btn btn-info">Más Información</button>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-2">
-              <div class="card">
-                <a href="#">
-                    <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/imag5.png')}} alt="Proveedores" width="190" height="190"/>
-                </a>
-                <div class="card-body">
-                  <h5 class="card-title text-center">START S.A</h5>
-                  <p class="card-text text-justify">ID Proveedor: 87567356</p>
-                  <a href="#">
-                    <button class="btn btn-info">Más Información</button>
-                  </a>
-                </div>
-              </div>
-          </div>
-          <div class="card-deck">
-            <div class="row">
-              <div class="col-md-4 mb-2">
-                <div class="card">
-                  <a href="#">
-                      <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/imag3.png')}} alt="Proveedores" width="190" height="190"/>
-                  </a>
-                  <div class="card-body">
-                    <h5 class="card-title text-center">Jesús Reales</h5>
-                    <p class="card-text text-justify">ID Proveedor: 54685886</p>
-                    <a href="#">
-                      <button class="btn btn-info">Más Información</button>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-2">
-                <div class="card">
-                  <a href="#">
-                      <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/imag6.png')}} alt="Proveedores" width="190" height="190"/>
-                  </a>
-                  <div class="card-body">
-                    <h5 class="card-title text-center">Go S.A</h5>
-                    <p class="card-text text-justify">ID Proveedor: 6545321</p>
-                    <a href="#">
-                      <button class="btn btn-info">Más Información</button>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-2">
-                  <div class="card">
-                    <a href="#">
-                        <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/imag2.png')}} alt="Proveedores" width="190" height="190"/>
-                    </a>
-                    <div class="card-body">
-                      <h5 class="card-title text-center">Jorge Aristizabal</h5>
-                      <p class="card-text text-justify">ID Proveedor: 46857679</p>
-                      <a href="#">
-                        <button class="btn btn-info">Más Información</button>
-                      </a>
-                    </div>
-                  </div>
-              </div>
+          {%endfor%}
+        </div>
+        </div>
+    {%endfor%}
               <div class="clearfix">
                 <div><br></div>  
 				<div class="hint-text">Mostrando <b>6</b> de <b>6</b> entradas</div>

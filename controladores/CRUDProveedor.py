@@ -1,7 +1,7 @@
 from controladores.conexion import conectar
 from modelos.Proveedor import Proveedor
 
-def ConsultarProvedores() -> list[Proveedor]:
+def ConsultarProveedores() -> list[Proveedor]:
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('select * from proveedor')
