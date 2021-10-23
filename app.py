@@ -1,3 +1,4 @@
+import os
 from modelos.Usuario import Usuario
 from flask import Flask, render_template, request, redirect
 from controladores.CRUDRol import ObtenerRoles
@@ -5,6 +6,8 @@ from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarU
 from miscelaneos.misc import ListaATabla, CifrarContrasena
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER']= './static/img'
+
 usuarios_bd = []
 ROLES = ObtenerRoles()
 
@@ -75,6 +78,10 @@ def usuariosAgregar():
         rol_nuevo = int(rol_nuevo)
         if len([u for u in usuarios_bd if u.id == id_nuevo]) == 1:
             return redirect('/usuarios/agregar')
+        imagen_usuario= request.files['imagen']
+        if imagen_usuario.filename!="":
+            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
+            imagen_usuario.save(ruta_guardar)
         AgregarUsuario(Usuario(id_nuevo, nombre_nuevo, password_nuevo), ROLES[rol_nuevo])
         TraerUsuarios()
         return redirect('/usuarios')
@@ -97,6 +104,10 @@ def usuariosEditar():
             return redirect('/usuarios/editar')
         cambiar_contrasena = password_nuevo != ''
         EditarUsuario(id_nuevo, Usuario(id_nuevo, nombre_nuevo, password_nuevo), ROLES[rol_nuevo], cambiar_contrasena)
+        imagen_usuario= request.files['imagen']
+        if imagen_usuario.filename!="":
+            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
+            imagen_usuario.save(ruta_guardar)
         TraerUsuarios()
         return redirect('/usuarios')
     if esta_registrado:
