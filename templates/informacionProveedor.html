@@ -3,5 +3,46 @@
 {% block titulo %} INFORMACIÓN PROVEEDOR {% endblock %}
 
 {% block content %}
-
+  <!-- Inicia Section 1 -->
+  <section class="container my-5" text-align= "center">
+    <!-- Inicia Cards 1-->
+      <div class="card-deck">
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <div class="card">
+              <a href="#">
+                  <img class="card-img-top" src= "6545321.jpg" alt="Proveedores"/>
+              </a>
+              <div class="card-body">
+                <h5 class="card-title text-center">GO S.A</h5>
+                <p class="card-text text-justify">6545321</p>
+                <a href="#">
+                  <button class="btn btn-info">Más Información</button>
+                </a>
+              </div>
+            </div>
+          </div>
+<h4>PRODUCTOS DEL PROVEEDOR</h4>
+    <!-- producto 1-->
+    <div class="col-md-4 mb-2">
+        <div class="card">
+          <a href="#">
+              <img class="card-img-top" src={{url_for('static', filename='img/Productos/imagenDashProductos.jpg')}} alt="Productos" width="190" height="190"/>
+          </a>
+          <div class="card-body">
+            <h5 class="card-title text-center">Victory 2019</h5>
+          </div>
+        </div>
+      </div>
+      <!-- producto 2-->
+      <div class="col-md-4 mb-2">
+        <div class="card">
+          <a href="#">
+              <img class="card-img-top" src={{url_for('static', filename='img/Productos/mercedes.jpg')}} alt="Productos"  width="190" height="190" />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title text-center">Mercedes 1985</h5>
+          </div>
+        </div>
+      </div>
 {% endblock %}

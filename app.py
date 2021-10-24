@@ -253,3 +253,10 @@ def proveedoresEliminar():
             TraerProveedores()
         return render_template('proveedoresEliminar.html', usuario_registrado=usuario_registrado, proveedores = proveedores_bd)
     return redirect('/')
+
+@app.route('/proveedor')
+def proveedor():
+    global esta_registrado, usuario_registrado
+    if esta_registrado:
+        return render_template('informacionProveedor.html', usuario_registrado=usuario_registrado)
+    return redirect('/')
