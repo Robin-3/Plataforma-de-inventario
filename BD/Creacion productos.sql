@@ -1,0 +1,1 @@
+INSERT INTO `producto` VALUES (1,'AM Vantage','Aston Martin Vantage',4,10,50),(2,'AM_DB11','Aston Martin DB11',3,5,4),(3,'AM_Valkyrie','Aston Martin Valkyrie',1,3,10),(15,'AM DBS Superleggera','Aston Martin DBS Superleggera',5,4,2),(16,'AM Valhalla','Aston Martin Valhalla',3,4,10),(17,'AM DBX','Aston Martin DBX',5,5,2),(18,'AM DB11 Volante','Aston Martin DB11 Volante',2,5,7);
