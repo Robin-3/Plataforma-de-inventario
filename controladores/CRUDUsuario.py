@@ -1,17 +1,18 @@
+from typing import List
 from controladores.conexion import conectar
 from modelos.Rol import Rol
 from controladores.CRUDRol import ObtenerRoles
 from modelos.Usuario import Usuario
 from miscelaneos.misc import CifrarContrasena
 
-ROLES: list[Rol] = ObtenerRoles()
+ROLES: List[Rol] = ObtenerRoles()
 
-def ConsultarUsuarios() -> list[Usuario]:
+def ConsultarUsuarios() -> List[Usuario]:
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('select * from usuario')
 
-    usuarios: list[Usuario] = []
+    usuarios: List[Usuario] = []
     for cursor in BDcursor:
         rol: Rol = [i for i in ROLES if i.id == cursor[3]][0]
         usuarios.append(Usuario(cursor[0], cursor[1], cursor[2], rol))

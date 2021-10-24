@@ -1,7 +1,8 @@
+from typing import List
 from controladores.conexion import conectar
 from modelos.Producto import Producto
 
-def ConsultarProductos() -> list[Producto]:
+def ConsultarProductos() -> List[Producto]:
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('select * from producto')

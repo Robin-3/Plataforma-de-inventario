@@ -210,16 +210,46 @@ def proveedoresAgregar():
         return render_template('proveedoresAgregar.html', usuario_registrado=usuario_registrado)
     return redirect('/')
 
-@app.route('/proveedores/editar', methods=['GET','PUT'])
+@app.route('/proveedores/editar', methods=['GET','POST'])
 def proveedoresEditar():
-    global esta_registrado, usuario_registrado
+    global proveedor_bd,esta_registrado, usuario_registrado
+    if request.method == "POST":
+        id_nuevoprov = int(request.form["id"])
+        nombre_nuevoprov = request.form["nombre"]
+        if nombre_nuevoprov == "":
+            return redirect("/proveedores/editar")
+        EditarProveedor (id_nuevoprov, Proveedor(55,nombre_nuevoprov))
+        TraerProveedores()
+        return redirect('/proveedores')
     if esta_registrado:
-        return render_template('proveedoresEditar.html', usuario_registrado=usuario_registrado)
+        if proveedores_bd == []:
+            TraerProveedores()
+        return render_template('proveedoresEditar.html', usuario_registrado=usuario_registrado,Proveedores= proveedores_bd)
     return redirect('/')
 
-@app.route('/proveedores/eliminar', methods=['GET','DELETE'])
+@app.route('/proveedores/editar/proveedor', methods = ['POST'])
+def proveedoresEditarproveedor():
+    global proveedor_bd,esta_registrado, usuario_registrado
+    if request.method =="POST":
+        id_nuevoprov = int (request.form['id'])
+        if esta_registrado:
+            if proveedores_bd == []:
+                TraerProveedores()
+            proveedores_editar = [u for u in proveedores_bd if u.id == id_nuevoprov][0]
+            return render_template('proveedoresEditarproveedor.html', proveedor=proveedores_editar, usuario_registrado=usuario_registrado)
+    return redirect('/')
+
+
+@app.route('/proveedores/eliminar', methods=['GET','POST'])
 def proveedoresEliminar():
-    global esta_registrado, usuario_registrado
+    global proveedore_bd,esta_registrado, usuario_registrado
+    if request.method == 'POST':
+        for proveedor in [p for p in request.form.values()]:
+            EliminarProveedor(proveedor)
+        TraerProveedores()
+        return redirect('/proveedores')
     if esta_registrado:
-        return render_template('proveedoresEliminar.html', usuario_registrado=usuario_registrado)
+        if proveedores_bd ==[]:
+            TraerProveedores()
+        return render_template('proveedoresEliminar.html', usuario_registrado=usuario_registrado, proveedores = proveedores_bd)
     return redirect('/')

@@ -1,12 +1,13 @@
+from typing import List
 from controladores.conexion import conectar
 from modelos.Proveedor import Proveedor
 
-def ConsultarProveedores() -> list[Proveedor]:
+def ConsultarProveedores() -> List[Proveedor]:
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('select * from proveedor')
 
-    proveedores: list[Proveedor] = []
+    proveedores: List[Proveedor] = []
     for cursor in BDcursor:
         proveedores.append(Proveedor(cursor[0], cursor[1]))
     BDcursor.close()

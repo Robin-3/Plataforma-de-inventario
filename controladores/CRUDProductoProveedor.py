@@ -1,3 +1,4 @@
+from typing import List
 from controladores.conexion import conectar
 from modelos.Producto import Producto
 from modelos.Proveedor import Proveedor
@@ -5,14 +6,14 @@ from modelos.ProductoProveedor import ProductoProveedor
 from controladores.CRUDProducto import ConsultarProductos
 from controladores.CRUDProveedor import ConsultarProvedores
 
-def ConsultarProductosProveedores() -> list[ProductoProveedor]:
-    productos: list[Producto] = ConsultarProductos()
-    proveedores: list[Proveedor] = ConsultarProvedores()
+def ConsultarProductosProveedores() -> List[ProductoProveedor]:
+    productos: List[Producto] = ConsultarProductos()
+    proveedores: List[Proveedor] = ConsultarProvedores()
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('select * from producto_proveedor')
 
-    productosProveedores: list[ProductoProveedor] = []
+    productosProveedores: List[ProductoProveedor] = []
     for cursor in BDcursor:
         producto: Producto = [i for i in productos if i.id == cursor[1]][0]
         proveedor: Proveedor = [i for i in proveedores if i.id == cursor[2]][0]

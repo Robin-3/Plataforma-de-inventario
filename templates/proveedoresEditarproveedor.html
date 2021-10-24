@@ -1,0 +1,30 @@
+{% extends "template_base.html" %}
+
+{% block titulo %} PROVEEDORES{% endblock %}
+
+{% block content %}
+<h3>EDITAR DATOS DEL PROVEEDORES</h3>
+<br><br>
+<form action= "{{url_for('proveedoresEditar')}}" method="post" enctype="multipart/form-data">
+    <div class="container text-center col-sm-9">
+        <div class="mb-3 row">
+            <label for="idUsuariolabel" class="col-sm-4 col-form-label">Id proveedor</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="id" id="idProveedor" value="{{proveedor.id}}" readonly>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Nombrelabel" class="col-sm-4 col-form-label">Nombre</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="nombre" id="nombreProveedor" value="{{proveedor.nombre}}">
+            </div>
+        </div>
+       
+        <div><br></div>
+        <div>
+            <input type="submit" class="btn btn-success" value="Guardar"> 
+        </div>
+        <div><br><br><br></div>
+    </div>
+</form>
+{% endblock %}
