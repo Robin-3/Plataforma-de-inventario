@@ -20,10 +20,11 @@ def ConsultarUsuarios() -> List[Usuario]:
     BD.close()
     return usuarios
 
-def AgregarUsuario(usuario: Usuario, rol: Rol) -> None:
+def AgregarUsuario(idNuevo: int, nombreNuevo: str, contrasenaNueva: str, rolNuevo: int) -> None:
+    usuario: Usuario = Usuario(idNuevo, nombreNuevo, contrasenaNueva, ROLES[rolNuevo])
     datos: dict = eval(usuario.__repr__())
     datos['contraseña'] = CifrarContrasena(datos['contraseña'])
-    datos['rol'] = rol.id
+    datos['rol'] = rolNuevo
 
     BD = conectar()
     BDcursor = BD.cursor()
@@ -32,10 +33,10 @@ def AgregarUsuario(usuario: Usuario, rol: Rol) -> None:
     BDcursor.close()
     BD.close()
 
-def EditarUsuario(id: int, usuario: Usuario, rol: Rol, cambioContrasena: bool=False) -> None:
+def EditarUsuario(idNuevo: int, nombreNuevo: str, contrasenaNueva: str, rolNuevo: int, cambioContrasena: bool) -> None:
+    usuario: Usuario = Usuario(idNuevo, nombreNuevo, contrasenaNueva, ROLES[rolNuevo])
     datos: dict = eval(usuario.__repr__())
-    datos['id'] = id
-    datos['rol'] = rol.id
+    datos['rol'] = rolNuevo
 
     BD = conectar()
     BDcursor = BD.cursor()
@@ -48,10 +49,17 @@ def EditarUsuario(id: int, usuario: Usuario, rol: Rol, cambioContrasena: bool=Fa
     BDcursor.close()
     BD.close()
 
-def EliminarUsuario(id: int) -> None:
+def EliminarUsuario(idEliminar: int) -> None:
     BD = conectar()
     BDcursor = BD.cursor()
-    BDcursor.execute('delete from usuario where id_usuario=%s', (id, ))
+    BDcursor.execute('delete from usuario where id_usuario=%s', (idEliminar, ))
     BD.commit()
     BDcursor.close()
     BD.close()
+
+def BuscarUsuarios(idBuscar: int) -> List[Usuario]:
+    return [usuario for usuario in ConsultarUsuarios() if usuario.id == idBuscar]
+
+def ExisteUsuario(idBuscar: int) -> bool:
+    return len(BuscarUsuarios(idBuscar)) > 0
+

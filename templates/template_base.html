@@ -17,8 +17,8 @@
         <!-- Comienza la barra de Navegación -->
         <div class="container col-2 sticky-top backgroundNav"><br>
           <img src={{url_for('static', filename='img/logo.png')}} class="img-fluid rounded" alt="Programa Inventarios"/><br><br>
-          <div class="text-center">Bienvenido: {{usuario_registrado.nombre}}</div>
-          <ul class="list-group"><br><br>
+          <div class="text-center">Bienvenido<br>{{usuario_registrado.nombre}}</div>
+          <ul class="list-group"><br>
             <a href={{url_for('dashboard')}} class="btn btn-success btn-lg">DASHBOARD</a><br>
             {% if usuario_registrado.rol.id != 0 %}
             <div class="btn-group dropend" role="group">

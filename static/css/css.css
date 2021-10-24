@@ -36,3 +36,9 @@
     color: rgb(243, 237, 237);
     background-color: #425f0c;
 }
+
+input:invalid, input:invalid:focus {
+  border: 2px dashed red;
+}
+
+

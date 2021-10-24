@@ -9,12 +9,7 @@
 <table class="table table-hover table-striped">
     <thead class="table-dark">
         <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
+            <th><span></span></th>
             <th scope="col">idUsuario</th>
             <th scope="col">Nombre</th>
             <th scope="col">Rol</th>
@@ -26,20 +21,20 @@
                 <tr>
                     <th>
                         <span class="custom-checkbox">
-                          <input type="radio" id="selectAll" name="id" value="{{usuario.id}}">
+                          <input type="radio" id="{{usuario.id}}" name="id" value="{{usuario.id}}">
                             <label for="selectAll"></label>
                         </span>
                     </th>
-                    <td>{{usuario.id}}</td>
-                    <td>{{usuario.nombre}}</td>
-                    <td>{{usuario.rol.nombre}}</td>
+                    <td scope="row"><label for="{{usuario.id}}">{{usuario.id}}</label></td>
+                    <td><label for="{{usuario.id}}">{{usuario.nombre}}</label></td>
+                    <td><label for="{{usuario.id}}">{{usuario.rol.nombre}}</label></td>
                 </tr>
         {% endfor %}
     </tbody>
   </table>
   <div><br></div>
   <div>
-      <input type="submit" class="btn btn-success">
+    <input type="submit" class="btn btn-success" value="SELECCIONAR USUARIO">
       </form>
   </div>
   <div><br><br><br></div>
