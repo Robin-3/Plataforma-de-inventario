@@ -17,6 +17,15 @@ def ImprimirListaObjetos(lista: list):
 
 if __name__ == '__main__':
 
+    AgregarProveedor(Proveedor(87659874, 'Perla Paz'))
+    AgregarProveedor(Proveedor(8965874, 'DB organization'))
+    AgregarProveedor(Proveedor(87567356, 'START S.A'))
+    AgregarProveedor(Proveedor(54685886, 'Jesús Reales'))
+    AgregarProveedor(Proveedor(6545321, 'Go S.A'))
+    AgregarProveedor(Proveedor(46857679, 'Jorge Aristizabal'))
+
+
+    '''
     roles: list[Rol] = ObtenerRoles()
     AgregarUsuario(Usuario(1023456876, 'Ana Díaz', '1'), roles[0])
     AgregarUsuario(Usuario(2345678, 'Carlos Paez', '2'), roles[0])
@@ -24,7 +33,7 @@ if __name__ == '__main__':
     AgregarUsuario(Usuario(7799654, 'Pedro Rincón', '4'), roles[1])
     AgregarUsuario(Usuario(6545321, 'Rosa Hernández', '5'), roles[2])
     AgregarUsuario(Usuario(95341236, 'Yesid Rodríguez', '6'), roles[2])
-
+    '''
     '''roles: list[Rol] = ObtenerRoles()
     print("--------------------ROLES: MOSTRAR---------")
     ImprimirListaObjetos(ObtenerRoles())
