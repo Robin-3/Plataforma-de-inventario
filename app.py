@@ -268,11 +268,20 @@ def productosEditarproducto():
         return render_template('productosEditarproducto.html', producto=producto_editar, usuario_registrado=usuario_registrado, productos = productos_bd, mensaje=mensaje)
     return redirect('/')
 
-@app.route('/productos/eliminar', methods=['GET','DELETE'])
+@app.route('/productos/eliminar', methods=['GET','POST'])
 def productosEliminar():
-    global esta_registrado, usuario_registrado
+    global esta_registrado, usuario_registrado, productos_bd
+    if request.method == 'POST':
+        for producto in [h for h in request.form.values()]:
+            EliminarProducto(producto)
+        TraerProductos()
+        return redirect('/productos')
+    
+    
     if esta_registrado:
-        return render_template('productosEliminar.html', usuario_registrado=usuario_registrado)
+        if productos_bd ==[]:
+            TraerProductos()
+        return render_template('productosEliminar.html', productos = productos_bd, usuario_registrado=usuario_registrado)
     return redirect('/')
 
 @app.route('/proveedores', methods=['GET'])
