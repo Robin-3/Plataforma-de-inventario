@@ -1,10 +1,12 @@
 import os
 from modelos.Usuario import Usuario
 from modelos.Proveedor import Proveedor
+from modelos.Producto import Producto
 from flask import Flask, render_template, request, redirect
 from controladores.CRUDRol import ObtenerRoles
 from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario
 from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor
+from controladores.CRUDProducto import ConsultarProductos, AgregarProducto,EditarProducto, EliminarProducto
 from miscelaneos.misc import ListaATabla, CifrarContrasena
 
 app = Flask(__name__)
@@ -12,6 +14,7 @@ app.config['UPLOAD_FOLDER']= './static/img'
 
 usuarios_bd = []
 proveedores_bd = []
+productos_bd =[]
 ROLES = ObtenerRoles()
 
 esta_registrado = False
@@ -28,6 +31,12 @@ def TraerProveedores():
     proveedores_bd.clear()
     for u in ConsultarProveedores():
         proveedores_bd.append(u)
+
+def TraerProductos():
+    global productos_bd
+    productos_bd.clear()
+    for i in ConsultarProductos():
+        productos_bd.append(i)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -157,21 +166,98 @@ def usuariosEliminar():
 def productos():
     global esta_registrado, usuario_registrado
     if esta_registrado:
-        return render_template('productos.html', usuario_registrado=usuario_registrado)
+        if productos_bd == []:
+            TraerProductos()
+        return render_template('productos.html', usuario_registrado=usuario_registrado, productos = ListaATabla(productos_bd, 3))
     return redirect('/')
 
 @app.route('/productos/agregar', methods=['GET','POST'])
 def productosAgregar():
     global esta_registrado, usuario_registrado
+    if request.method =="POST":
+        nombre_producto = request.form['nombreProduct']
+        descripcion_producto = request.form['DescProduct']
+        calificacion_producto = request.form['calific']
+        cantMinima = request.form['canMin']
+        cantDisponible = request.form['canDisp']
+        imagenProduct = request.files['imagen']
+
+        if (nombre_producto == '' or descripcion_producto == '' or calificacion_producto == 'Seleccione' or cantMinima == '' or cantDisponible == ''):
+            mensaje = 'Error al intentar agregar el producto, uno o varios campos estaban vacíos. Por favor revise nuevamente los campos'
+            return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
+        if imagenProduct.filename =="":
+            mensaje = 'Error: Por favor seleccione una imagen para continuar'
+            return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
+        if productos_bd == []:
+            TraerProductos()
+        calificacion_producto = float(calificacion_producto)
+        cantMinima = int(cantMinima)
+        cantDisponible = int(cantDisponible)
+        id=0
+        for h in productos_bd:
+            if h.nombre == nombre_producto:
+                mensaje = 'Error: el producto ' + nombre_producto + ' ya existe en el sistema'
+                return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
+        AgregarProducto(Producto(id, nombre_producto, descripcion_producto, calificacion_producto, cantMinima, cantDisponible))
+        TraerProductos()
+        for h in productos_bd:
+            if h.nombre == nombre_producto:
+                id = h.id
+        if imagenProduct.filename!="":
+            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(id)+'.jpg')
+            imagenProduct.save(ruta_guardar)
+        return redirect('/productos')
     if esta_registrado:
-        return render_template('productosAgregar.html', usuario_registrado=usuario_registrado)
+        mensaje='False'
+        return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
     return redirect('/')
 
-@app.route('/productos/editar', methods=['GET','PUT'])
+@app.route('/productos/editar', methods=['GET','POST'])
 def productosEditar():
-    global esta_registrado, usuario_registrado
+    global esta_registrado, usuario_registrado, productos_bd
+    if request.method =="POST":
+        id = request.form['id']
+        nombre_producto = request.form['nombreProduct']
+        descripcion_producto = request.form['DescProduct']
+        calificacion_producto = request.form['calific']
+        cantMinima = request.form['canMin']
+        cantDisponible = request.form['canDisp']
+        imagenProduct = request.files['imagen']
+
+        if (nombre_producto == '' or descripcion_producto == '' or calificacion_producto == 'Seleccione' or cantMinima == '' or cantDisponible == ''):
+            idProducto = int (request.form['id'])
+            producto_editar = [h for h in productos_bd if h.id == idProducto][0]
+            mensaje = 'Error al intentar editar el producto, uno o varios campos estaban vacíos. Por favor revise nuevamente'
+            return render_template('productosEditarproducto.html', producto=producto_editar, usuario_registrado=usuario_registrado, mensaje=mensaje)
+        if productos_bd == []:
+            TraerProductos()
+        id = int(id)
+        calificacion_producto = float(calificacion_producto)
+        cantMinima = int(cantMinima)
+        cantDisponible = int(cantDisponible)
+        EditarProducto(id, Producto(id, nombre_producto, descripcion_producto, calificacion_producto, cantMinima, cantDisponible))
+        TraerProductos()
+        if imagenProduct.filename!="":
+            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(id)+'.jpg')
+            imagenProduct.save(ruta_guardar)
+        return redirect('/productos/editar')    
     if esta_registrado:
-        return render_template('productosEditar.html', usuario_registrado=usuario_registrado)
+        if productos_bd == []:
+            TraerProductos()
+        return render_template('productosEditar.html', usuario_registrado=usuario_registrado, productos = productos_bd)
+    return redirect('/')
+
+@app.route('/productos/editar/producto', methods=['POST'])
+def productosEditarproducto():
+    global esta_registrado, usuario_registrado, productos_bd
+    if request.method =="POST":
+        idProducto = int (request.form['id'])
+        producto_editar = [h for h in productos_bd if h.id == idProducto][0]
+    if esta_registrado:
+        if productos_bd == []:
+            TraerProductos()
+        mensaje='False'
+        return render_template('productosEditarproducto.html', producto=producto_editar, usuario_registrado=usuario_registrado, productos = productos_bd, mensaje=mensaje)
     return redirect('/')
 
 @app.route('/productos/eliminar', methods=['GET','DELETE'])

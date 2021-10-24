@@ -5,115 +5,43 @@
 {% block content %}
 <h3>EDITAR PRODUCTOS</h3>
 <div><br><br></div>
-
-<table class="table table-hover table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="col">idProducto</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripcion</th>
-            <th scope="col">Calificacion</th>
-            <th scope="col">Cantidad minima</th>
-            <th scope="col">Cantidad disponible</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">102345</th>
-            <td>Victory 2019</td>
-            <td>Gama alta</td>
-            <td>4</td>
-            <td>5</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">102346</th>
-            <td>Mercedes 1985</td>
-            <td>Gama alta</td>
-            <td>4</td>
-            <td>5</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">102347</th>
-            <td>Mercedes 1996</td>
-            <td>Gama alta</td>
-            <td>4</td>
-            <td>5</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">102348</th>
-            <td>Jeep Wrangler</td>
-            <td>Gama alta</td>
-            <td>4</td>
-            <td>5</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">102348</th>
-            <td>Volvo XC40</td>
-            <td>Gama alta</td>
-            <td>4</td>
-            <td>5</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
-            </th>
-            <th scope="row">102349</th>
-            <td>Kia Picanto GT</td>
-            <td>Gama alta</td>
-            <td>4</td>
-            <td>5</td>
-            <td>5</td>
-        </tr>
-    </tbody>
-  </table>
+<form action={{url_for('productosEditarproducto')}} method="POST">
+    <table class="table table-hover table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col"></th> 
+                <th scope="col">idProducto</th> 
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Calificacion</th>
+                <th scope="col">Cant minima</th>
+                <th scope="col">Cant disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--HHH Traemos los productos de la BD -->
+            {% for productos in productos %}
+            <tr>
+                <th>
+                    <span class="custom-checkbox">
+                        <input type="radio" id="selectAll" name="id" value="{{productos.id}}">
+                        <label for="selectAll"></label>
+                    </span>
+                </th>
+                <th scope="row">{{productos.id}}</th>
+                <td>{{productos.nombre}}</td>
+                <td>{{productos.descripcion}}</td>
+                <td>{{productos.calificacion}}</td>
+                <td>{{productos.minimo}}</td>
+                <td>{{productos.disponible}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
   <div><br></div>
   <div>
-      <button type="button" class="btn btn-success">Editar</button>
-      <button type="button" class="btn btn-success">Cancelar</button>
+      <button type="submit" class="btn btn-success">Editar</button>
   </div>
   <div><br><br><br></div>
+</form>
 {% endblock %}
