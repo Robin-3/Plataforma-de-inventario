@@ -1,9 +1,7 @@
 import os
-from modelos.Usuario import Usuario
 from modelos.Proveedor import Proveedor
 from flask import Flask, render_template, request, redirect
-from controladores.CRUDRol import ObtenerRoles
-from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario
+from controladores.CRUDUsuario import BuscarUsuarios, ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario, ExisteUsuario, BuscarUsuarios
 from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor
 from miscelaneos.misc import ListaATabla, CifrarContrasena
 
@@ -12,7 +10,6 @@ app.config['UPLOAD_FOLDER']= './static/img'
 
 usuarios_bd = []
 proveedores_bd = []
-ROLES = ObtenerRoles()
 
 esta_registrado = False
 usuario_registrado = None
@@ -20,14 +17,14 @@ usuario_registrado = None
 def TraerUsuarios():
     global usuarios_bd
     usuarios_bd.clear()
-    for u in ConsultarUsuarios():
-        usuarios_bd.append(u)
+    for usuario in ConsultarUsuarios():
+        usuarios_bd.append(usuario)
 
 def TraerProveedores():
     global proveedores_bd
     proveedores_bd.clear()
-    for u in ConsultarProveedores():
-        proveedores_bd.append(u)
+    for p in ConsultarProveedores():
+        proveedores_bd.append(p)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -59,7 +56,7 @@ def dashboard():
         return render_template('dashboard.html', usuario_registrado=usuario_registrado)
     return redirect('/')
 
-@app.route('/usuarios', methods=['GET'])
+@app.route('/usuarios/consultar', methods=['GET'])
 def usuarios():
     global esta_registrado, usuarios_bd, usuario_registrado
     if esta_registrado:
@@ -73,27 +70,27 @@ def usuarios():
 @app.route('/usuarios/agregar', methods=['GET','POST'])
 def usuariosAgregar():
     global esta_registrado, usuarios_bd, usuario_registrado
-    if request.method =="POST":
+    if request.method == 'POST':
         id_nuevo = request.form['id']
         nombre_nuevo = request.form['nombre']
         password_nuevo = request.form['password']
         password_confirm = request.form['password2']
         rol_nuevo = request.form['rol']
-        if (id_nuevo == '' or nombre_nuevo == '' or password_nuevo == '' or rol_nuevo == 'Seleccione') or password_nuevo != password_confirm:
+        if id_nuevo == '' or nombre_nuevo == '' or password_nuevo == '' or rol_nuevo == 'Seleccione' or password_nuevo != password_confirm:
             return redirect('/usuarios/agregar')
         if usuarios_bd == []:
             TraerUsuarios()
         id_nuevo = int(id_nuevo)
         rol_nuevo = int(rol_nuevo)
-        if len([u for u in usuarios_bd if u.id == id_nuevo]) == 1:
+        if ExisteUsuario(id_nuevo):
             return redirect('/usuarios/agregar')
-        imagen_usuario= request.files['imagen']
-        if imagen_usuario.filename!="":
-            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
+        imagen_usuario = request.files['imagen']
+        if imagen_usuario.filename != '':
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
             imagen_usuario.save(ruta_guardar)
-        AgregarUsuario(Usuario(id_nuevo, nombre_nuevo, password_nuevo), ROLES[rol_nuevo])
+        AgregarUsuario(id_nuevo, nombre_nuevo, password_nuevo, rol_nuevo)
         TraerUsuarios()
-        return redirect('/usuarios')
+        return redirect('/usuarios/consultar')
     if esta_registrado:
         if usuario_registrado.rol.id != 0:
             return render_template('usuariosAgregar.html', usuario_registrado=usuario_registrado)
@@ -112,13 +109,13 @@ def usuariosEditar():
         if nombre_nuevo == '' or password_nuevo != password_confirm:
             return redirect('/usuarios/editar')
         cambiar_contrasena = password_nuevo != ''
-        EditarUsuario(id_nuevo, Usuario(id_nuevo, nombre_nuevo, password_nuevo), ROLES[rol_nuevo], cambiar_contrasena)
-        imagen_usuario= request.files['imagen']
-        if imagen_usuario.filename!="":
-            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
+        EditarUsuario(id_nuevo, nombre_nuevo, password_nuevo, rol_nuevo, cambiar_contrasena)
+        imagen_usuario = request.files['imagen']
+        if imagen_usuario.filename != '':
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
             imagen_usuario.save(ruta_guardar)
         TraerUsuarios()
-        return redirect('/usuarios')
+        return redirect('/usuarios/consultar')
     if esta_registrado:
         if usuarios_bd == []:
             TraerUsuarios()
@@ -130,25 +127,35 @@ def usuariosEditar():
 @app.route('/usuarios/editar/usuario', methods=['POST'])
 def usuariosEditarusuario():
     global esta_registrado, usuarios_bd, usuario_registrado
-    if request.method == "POST":
+    if request.method == 'POST':
         if esta_registrado:
-            id_usuario = int(request.form['id'])
-            if usuarios_bd == []:
-                TraerUsuarios()
-            usuario_editar = [u for u in usuarios_bd if u.id == id_usuario][0]
-            return render_template('usuariosEditarusuario.html', usuario=usuario_editar, usuario_registrado=usuario_registrado)
+            if len(request.form) == 1:
+                id_usuario = int(request.form['id'])
+                if usuarios_bd == []:
+                    TraerUsuarios()
+                usuario_editar = BuscarUsuarios(id_usuario)[0]
+                return render_template('usuariosEditarusuario.html', usuario=usuario_editar, usuario_registrado=usuario_registrado)
+            return redirect('/usuarios/editar')
     return redirect('/')
 
 @app.route('/usuarios/eliminar', methods=['GET','POST'])
 def usuariosEliminar():
     global esta_registrado, usuarios_bd, usuario_registrado
     if request.method == 'POST':
-        for usuario in [d for d in request.form.values()]:
-            EliminarUsuario(usuario)
+        usuarios_eliminar = [u for u in request.form.values()]
+        if len(usuarios_eliminar) == 0:
+            return redirect('/usuarios/eliminar')
+        for id_usuario in usuarios_eliminar:
+            EliminarUsuario(id_usuario)
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_usuario)+'.jpg')
+            if os.path.exists(ruta_guardar):
+                os.remove(ruta_guardar)
         TraerUsuarios()
-        return redirect('/usuarios')
+        return redirect('/usuarios/consultar')
     if esta_registrado:
         if usuario_registrado.rol.id != 0:
+            if usuarios_bd == []:
+                TraerUsuarios()
             return render_template('usuariosEliminar.html', usuarios=usuarios_bd, usuario_registrado=usuario_registrado)
         return redirect('/dashboard')
     return redirect('/')
@@ -187,7 +194,7 @@ def proveedores():
     if esta_registrado:
         if proveedores_bd == []:
             TraerProveedores()
-        return render_template('proveedores.html', usuario_registrado=usuario_registrado, proveedores = ListaATabla(proveedores_bd, 3))
+        return render_template('proveedores.html', usuario_registrado=usuario_registrado, proveedores = ListaATabla(proveedores_bd, 2))
     return redirect('/')
 
 @app.route('/proveedores/agregar', methods=['GET','POST'])

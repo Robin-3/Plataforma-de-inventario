@@ -10,10 +10,8 @@
     <thead class="table-dark">
         <tr>
             <th>
-                <span class="custom-checkbox">
-                    <input type="checkbox" id="selectAll">
-                    <label for="selectAll"></label>
-                </span>
+              <span>
+              </span>
             </th>
             <th scope="col">idUsuario</th>
             <th scope="col">Nombre</th>
@@ -25,13 +23,13 @@
         <tr>
             <th>
                 <span class="custom-checkbox">
-                  <input type="checkbox" id="selectAll" name="{{usuario.id}}" value="{{usuario.id}}">
+                  <input type="checkbox" id="{{usuario.id}}" name="{{usuario.id}}" value="{{usuario.id}}">
                     <label for="selectAll"></label>
                 </span>
             </th>
-            <th scope="row">{{usuario.id}}</th>
-            <td>{{usuario.nombre}}</td>
-            <td>{{usuario.rol.nombre}}</td>
+            <th scope="row"><label for="{{usuario.id}}">{{usuario.id}}</label></th>
+            <td><label for="{{usuario.id}}">{{usuario.nombre}}</label></td>
+            <td><label for="{{usuario.id}}">{{usuario.rol.nombre}}</label></td>
             </td>
         </tr>
         {%endfor%}
@@ -39,7 +37,7 @@
   </table>
   <div><br></div>
   <div>
-      <input type="submit" class="btn btn-success">
+    <input type="submit" class="btn btn-success" value="ELIMINAR USUARIOS">
 </form>
   </div>
   <div><br><br><br></div>

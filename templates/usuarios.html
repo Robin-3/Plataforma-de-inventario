@@ -10,14 +10,14 @@
   {%for usuario_fila in usuarios%}
   <div class="card-deck">
     <div class="row">
-      {%for usuario_columna in usuario_fila%}
+      {%for usuario in usuario_fila%}
       <div class="col-md-4 mb-2">
         <div class="card">
-          <a href="#"><img class="card-img-top" src="/static/img/Usuarios/{{usuario_columna.id}}.jpg" alt="Usuarios"/></a>
+          <img class="card-img-top" src="/static/img/Usuarios/{{usuario.id}}.jpg" alt="Usuarios"/>
           <div class="card-body">
-            <h5 class="card-title text-center">{{usuario_columna.nombre}}</h5>
-            <p class="card-text text-justify">ID Usuario: {{usuario_columna.id}}</p>
-            <p class="card-text text-justify">Rol Usuario: {{usuario_columna.rol.nombre}}</p>
+            <h5 class="card-title text-center">{{usuario.nombre}}</h5>
+            <p class="card-text text-justify">ID Usuario: {{usuario.id}}</p>
+            <p class="card-text text-justify">Rol Usuario: {{usuario.rol.nombre}}</p>
           </div>
         </div>
       </div>
