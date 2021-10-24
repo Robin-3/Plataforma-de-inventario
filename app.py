@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER']= './static/img'
 usuarios_bd = []
 proveedores_bd = []
 productos_bd =[]
-ROLES = ObtenerRoles()
+'''ROLES = ObtenerRoles()'''
 
 esta_registrado = False
 usuario_registrado = None
