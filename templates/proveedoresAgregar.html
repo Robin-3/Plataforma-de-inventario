@@ -5,9 +5,9 @@
 {% block content %}
 <h3>AGREGAR PROVEEDORES</h3>
 <br><br>
-<form action="{{url_for('proveedoresAgregar')}}" method = "POST" >
+<form action={{url_for('proveedoresAgregar')}} method = "post" enctype="multipart/form-data">
     <div class="container text-center col-sm-9">
-        <div class="mb-3 row">
+         <div class="mb-3 row">
             <label for="idProveedorlabel" class="col-sm-4 col-form-label">Id Proveedor</label>
             <div class="col-sm-8">
                 <input type="number" class="form-control" id="idProveedor" name="id">
@@ -19,6 +19,12 @@
                 <input type="text" class="form-control" id="nombreProveedor" name="nombre">
             </div>
         </div>
+        <div class="mb-3 row">
+            <label for="nombreimagen" class="col-sm-4 col-form-label">Imagen (.jpg)</label>
+              <div class="col-sm-8">
+                  <input type="file" accept=".jpg" name="imagen" class="form-control" id="nombreimagen">
+              </div>
+          </div>
         <div><br></div>
         <div>
             <input type="submit" class="btn btn-success" value = "Guardar">

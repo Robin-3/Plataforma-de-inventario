@@ -345,6 +345,10 @@ def proveedoresAgregar():
         id_nuevoprov = int(id_nuevoprov)
         if len([u for u in proveedores_bd if u.id == id_nuevoprov]) == 1:
             return redirect('/proveedores/agregar')
+        imagen_prov = request.files['imagen']
+        if imagen_prov.filename != '':
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/proveedores', str(id_nuevoprov)+'.jpg')
+            imagen_prov.save(ruta_guardar)
         AgregarProveedor(Proveedor(id_nuevoprov, nombre_nuevoprov))
         TraerProveedores()
         return redirect('/proveedores')
@@ -362,6 +366,10 @@ def proveedoresEditar():
         if nombre_nuevoprov == "":
             return redirect("/proveedores/editar")
         EditarProveedor (id_nuevoprov, Proveedor(55,nombre_nuevoprov))
+        imagen_prov = request.files['imagen']
+        if imagen_prov.filename != '':
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/proveedores', str(id_nuevoprov)+'.jpg')
+            imagen_prov.save(ruta_guardar)
         TraerProveedores()
         return redirect('/proveedores')
     if esta_registrado:
