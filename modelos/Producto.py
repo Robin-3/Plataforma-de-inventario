@@ -3,7 +3,7 @@ class Producto:
     def __init__(self, id: int, nombre: str, descripcion: str, calificacion: float, minimo: int, disponible: int) -> None:
         self.__id: int = id
         self.__nombre: str = nombre
-        self.__descripcion: str = descripcion 
+        self.__descripcion: str = descripcion
         self.__calificacion: float = calificacion
         self.__minimo: int = minimo
         self.__disponible: int = disponible
