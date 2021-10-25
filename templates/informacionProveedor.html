@@ -8,10 +8,12 @@
     <!-- Inicia Cards 1-->
       <div class="card-deck">
         <div class="row justify-content-center">
-          <div class="col-md-4 mb-2 ">
+          <div class="col-md-6 mb-2 ">
             <div class="card border-success mb-4"  >
               <a href="#">
-                <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg" alt="Proveedores" width="190" height="190"/>
+                <div class="imagen-alto">
+                  <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg" alt="Proveedores"/>
+                </div>
               </a>
             </div>
         </div>
@@ -33,7 +35,9 @@
           <div class="col-md-4 mb-2">
             <div class="card">
               <a href="#">
-                <img class="card-img-top" src="/static/img/Productos/{{producto.id}}.jpg" alt="Productos"/>
+                <div class="imagen-alto">
+                  <img class="card-img-top" src="/static/img/Productos/{{producto.id}}.jpg" alt="Productos"/>
+                </div>
               </a>
               <div class="card-body">
                 <h5 class="card-title text-center">{{producto.nombre}}</h5>

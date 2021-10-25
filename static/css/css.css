@@ -41,4 +41,20 @@ input:invalid, input:invalid:focus {
   border: 2px dashed red;
 }
 
+.imagen-alto {
+  height: 190px;
+  overflow: hidden;
+    margin: 10px;
+    position: relative;
+}
+.imagen-alto > img {
+  position:absolute;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    margin: auto;
+    min-height: 100%;
+    min-width: 100%;
+}
 
