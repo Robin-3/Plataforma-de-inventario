@@ -1,0 +1,1 @@
+INSERT INTO `proveedor` VALUES (6545321,'Go S.A'),(8965874,'DB organization'),(46857679,'Jorge Aristizabal'),(54685886,'Jesús Reales'),(87567356,'START S.A'),(87659874,'Perla Paz');
