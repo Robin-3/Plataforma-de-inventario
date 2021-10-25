@@ -10,23 +10,23 @@
       <div class="row">
         <div class="col-md-6 mb-2">
           <div class="card">
-            <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/imagenDashProductos.jpg')}} alt="Productos"/></a>
+            <a href={{url_for('productos')}}><img class="card-img-top" src={{url_for('static', filename='img/imagenDashProductos.jpg')}} alt="Productos"/></a>
             <div class="card-body">
               <h5 class="card-title text-center">CONSULTA DE PRODUCTOS</h5>
               <p class="card-text text-justify">Consulta general de productos disponibles en Aston Martin.</p>
-              <a href="#">
-                <button class="btn btn-info">Ir a la Consulta</button>
+              <a href={{url_for('productos')}}>
+                <button type='submit' class="btn btn-info">Ir a la Consulta</button>
               </a>
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-2">
           <div class="card">
-            <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/imagenDashexistencias.jpg')}} alt="Existencias"/></a>
+            <a href={{url_for('productosEditar')}}><img class="card-img-top" src={{url_for('static', filename='img/imagenDashexistencias.jpg')}} alt="Existencias"/></a>
             <div class="card-body">
               <h5 class="card-title text-center">CONSULTA DE EXISTENCIAS</h5>
               <p class="card-text text-justify">Consulta de existencias del inventario general de la bodega.</p>
-              <a href="#">
+              <a href={{url_for('productosEditar')}}>
                 <button class="btn btn-info">Ir a la Consulta</button>
               </a>
             </div>
@@ -42,11 +42,11 @@
       <div class="row">
         <div class="col-md-6 mb-2">
           <div class="card">
-            <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/Dashproveerodes.jpg')}} alt="PROVEEDORES"/></a>
+            <a href={{url_for('proveedores')}}><img class="card-img-top" src={{url_for('static', filename='img/Dashproveerodes.jpg')}} alt="PROVEEDORES"/></a>
             <div class="card-body">
               <h5 class="card-title text-center">INFORME DE PROVEEDORES</h5>
               <p class="card-text text-justify">Revisar los productos asignados a cada proveedor.</p>
-              <a href="#">
+              <a href={{url_for('proveedores')}}>
                 <button class="btn btn-info">Ir al Informe</button>
               </a>
             </div>
@@ -54,11 +54,11 @@
         </div>
         <div class="col-md-6 mb-2">
           <div class="card">
-            <a href="#"><img class="card-img-top" src={{url_for('static', filename='img/Dashusuarios.png')}} alt="Usuarios del Sistema"/></a>
+            <a href={{url_for('usuarios')}}><img class="card-img-top" src={{url_for('static', filename='img/Dashusuarios.png')}} alt="Usuarios del Sistema"/></a>
             <div class="card-body">
               <h5 class="card-title text-center">INFORME DE USUARIOS DEL SISTEMA</h5>
               <p class="card-text text-justify">Informe de usuarios Activos del sistema.</p>
-              <a href="#">
+              <a href={{url_for('usuarios')}}>
                 <button class="btn btn-info">Ir al Informe</button>
               </a>
             </div>
