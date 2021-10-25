@@ -11,7 +11,7 @@
           <div class="col-md-4 mb-2 ">
             <div class="card border-success mb-4"  >
               <a href="#">
-                  <img class="card-img-top" src={{url_for('static', filename='img/Proveedores/6545321.jpg')}} alt="Proveedores" width="190" height="190"/>
+                <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg" alt="Proveedores" width="190" height="190"/>
               </a>
             </div>
         </div>
@@ -19,44 +19,29 @@
             <div class="row justify-content-center">
               <div class="col-md-4 mb-2 ">
                 <div class="card border-success mb-4"  >
-                    <h5 class="card-title text-center">GO S.A</h5>
-                    <p class="card-text text-justify">ID: 6545321</p>
+                  <h5 class="card-title text-center">{{proveedor.nombre}}</h5>
+                  <p class="card-text text-justify">{{proveedor.id}}</p>
                     </div>
                 </div>
             </div>
         </div>
 <h4>PRODUCTOS DEL PROVEEDOR</h4>
-    <!-- producto 1-->
-    <div class="col-md-4 mb-2">
-        <div class="card">
-          <a href="#">
-              <img class="card-img-top" src={{url_for('static', filename='img/Productos/imagenDashProductos.jpg')}} alt="Productos" width="190" height="190"/>
-          </a>
-          <div class="card-body">
-            <h5 class="card-title text-center">Victory 2019</h5>
+    {%for producto_fila in productos%}
+    <div class="card-deck">
+      <div class="row">
+        {%for producto in producto_fila%}
+          <div class="col-md-4 mb-2">
+            <div class="card">
+              <a href="#">
+                <img class="card-img-top" src="/static/img/Productos/{{producto.id}}.jpg" alt="Productos"/>
+              </a>
+              <div class="card-body">
+                <h5 class="card-title text-center">{{producto.nombre}}</h5>
+              </div>
+            </div>
           </div>
-        </div>
+          {%endfor%}
       </div>
-      <!-- producto 2-->
-      <div class="col-md-4 mb-2">
-        <div class="card">
-          <a href="#">
-              <img class="card-img-top" src={{url_for('static', filename='img/Productos/mercedes.jpg')}} alt="Productos"  width="190" height="190" />
-          </a>
-          <div class="card-body">
-            <h5 class="card-title text-center">Mercedes 1985</h5>
-          </div>
-        </div>
-      </div>
-    <!-- producto 2-->
-    <div class="col-md-4 mb-2">
-    <div class="card">
-        <a href="#">
-            <img class="card-img-top" src={{url_for('static', filename='img/Productos/mercedes.jpg')}} alt="Productos"  width="190" height="190" />
-        </a>
-        <div class="card-body">
-        <h5 class="card-title text-center">Mercedes 1985</h5>
-        </div>
     </div>
-    </div>
+    {%endfor%}
 {% endblock %}

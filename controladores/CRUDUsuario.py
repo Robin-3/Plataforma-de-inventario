@@ -57,9 +57,12 @@ def EliminarUsuario(idEliminar: int) -> None:
     BDcursor.close()
     BD.close()
 
-def BuscarUsuarios(idBuscar: int) -> List[Usuario]:
-    return [usuario for usuario in ConsultarUsuarios() if usuario.id == idBuscar]
+def BuscarUsuario(idBuscar: int):
+    usuarios: List[Usuario] = [usuario for usuario in ConsultarUsuarios() if usuario.id == idBuscar]
+    if len(usuarios) == 0:
+        return None
+    return usuarios[0]
 
 def ExisteUsuario(idBuscar: int) -> bool:
-    return len(BuscarUsuarios(idBuscar)) > 0
+    return BuscarUsuario(idBuscar) != None
 

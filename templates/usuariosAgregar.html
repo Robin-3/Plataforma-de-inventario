@@ -7,6 +7,9 @@
 <br><br>
 <form action={{url_for('usuariosAgregar')}} method="post" enctype="multipart/form-data">
     <div class="container text-center col-sm-9">
+      {%if error != ''%}
+      <div class="alert alert-danger" role="alert">{{error}}</div>
+      {%endif%}
         <div class="mb-3 row">
             <label for="idUsuario" class="col-sm-4 col-form-label">Id Usuario</label>
             <div class="col-sm-8">

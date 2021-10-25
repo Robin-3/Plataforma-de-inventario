@@ -21,6 +21,9 @@
         <div class="row">
           <br><br>
         </div>
+        {%if error != ''%}
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+        {%endif%}
         <form method="POST" action="{{url_for('dashboard')}}">
           <div class="container text-center col-sm-7">
             <div class="row mb-3">

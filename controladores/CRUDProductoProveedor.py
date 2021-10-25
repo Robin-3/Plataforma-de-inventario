@@ -4,11 +4,11 @@ from modelos.Producto import Producto
 from modelos.Proveedor import Proveedor
 from modelos.ProductoProveedor import ProductoProveedor
 from controladores.CRUDProducto import ConsultarProductos
-from controladores.CRUDProveedor import ConsultarProvedores
+from controladores.CRUDProveedor import ConsultarProveedores
 
 def ConsultarProductosProveedores() -> List[ProductoProveedor]:
     productos: List[Producto] = ConsultarProductos()
-    proveedores: List[Proveedor] = ConsultarProvedores()
+    proveedores: List[Proveedor] = ConsultarProveedores()
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('select * from producto_proveedor')
@@ -54,3 +54,7 @@ def EliminarProductoProveedor(id: int) -> None:
     BD.commit()
     BDcursor.close()
     BD.close()
+
+def BuscarProductosDelProveedor(idProveedor: int) -> List[Producto]:
+    return [d.producto for d in ConsultarProductosProveedores() if d.proveedor.id == idProveedor]
+
