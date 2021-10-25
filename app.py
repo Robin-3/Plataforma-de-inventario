@@ -203,9 +203,9 @@ def usuariosEliminar():
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
-@app.route('/productos', methods=['GET'])
+@app.route('/productos', methods=['GET', 'POST'])
 def productos():
-    global esta_registrado, usuario_registrado
+    global esta_registrado, usuario_registrado, productos_bd
     if esta_registrado:
         if productos_bd == []:
             TraerProductos()
