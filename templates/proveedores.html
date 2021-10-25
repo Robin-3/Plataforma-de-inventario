@@ -13,11 +13,9 @@
           {%for proveedor_columna in proveedor_fila%}
           <div class="col-md-6 mb-2">
             <div class="card">
-              <a href="#">
                 <div class="imagen-alto">
-                  <img class="card-img-top" src= "/static/img/Proveedores/{{proveedor_columna.id}}.jpg" alt="Proveedores"/>
+                  <img class="card-img-top" src= "/static/img/Proveedores/{{proveedor_columna.id}}.jpg" alt="Imagen de proveedor no encontrada"/>
                 </div>
-              </a>
               <div class="card-body">
                 <h5 class="card-title text-center">{{proveedor_columna.nombre}}</h5>
                 <p class="card-text text-justify">{{proveedor_columna.id}}</p>

@@ -14,7 +14,8 @@ def ConsultarProductos() -> List[Producto]:
     BD.close()
     return productos
 
-def AgregarProducto(producto: Producto) -> None:
+def AgregarProducto(nombreNuevo: str, descripcionNueva: str, calificacionNueva: float, minimoNuevo: int, disponibleNuevo: int) -> None:
+    producto: Producto = Producto(0, nombreNuevo, descripcionNueva, calificacionNueva, minimoNuevo, disponibleNuevo)
     datos: dict = eval(producto.__repr__())
 
     BD = conectar()
@@ -24,9 +25,9 @@ def AgregarProducto(producto: Producto) -> None:
     BDcursor.close()
     BD.close()
 
-def EditarProducto(id: int, producto: Producto) -> None:
+def EditarProducto(idNuevo: int, nombreNuevo: str, descripcionNueva: str, calificacionNueva: float, minimoNuevo: int, disponibleNuevo: int) -> None:
+    producto: Producto = Producto(idNuevo, nombreNuevo, descripcionNueva, calificacionNueva, minimoNuevo, disponibleNuevo)
     datos: dict = eval(producto.__repr__())
-    datos['id'] = id
 
     BD = conectar()
     BDcursor = BD.cursor()
@@ -35,10 +36,34 @@ def EditarProducto(id: int, producto: Producto) -> None:
     BDcursor.close()
     BD.close()
 
-def EliminarProducto(id: int) -> None:
+def EliminarProducto(idEliminar: int) -> None:
+    from controladores.CRUDProductoProveedor import EliminarProductoProveedorPorProducto
+    EliminarProductoProveedorPorProducto(idEliminar)
     BD = conectar()
     BDcursor = BD.cursor()
-    BDcursor.execute('delete from producto where id_producto=%s', (id, ))
+    BDcursor.execute('delete from producto where id_producto=%s', (idEliminar, ))
     BD.commit()
     BDcursor.close()
     BD.close()
+
+def BuscarProducto(nombreBuscar: str):
+    productos: List[Producto] = [producto for producto in ConsultarProductos() if producto.nombre == nombreBuscar]
+    if len(productos) == 0:
+        return None
+    return productos[0]
+
+def ExisteProducto(nombreBuscar: str) -> bool:
+    return BuscarProducto(nombreBuscar) != None
+
+def BuscarIdProducto(nombreBuscar: str) -> int:
+    producto = BuscarProducto(nombreBuscar)
+    if producto == None:
+        return -1
+    return producto.id
+
+def BuscarProductoPorId(idBuscar: int):
+    productos: List[Producto] = [producto for producto in ConsultarProductos() if producto.id == idBuscar]
+    if len(productos) == 0:
+        return None
+    return productos[0]
+

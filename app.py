@@ -1,10 +1,9 @@
 import os
 from modelos.Proveedor import Proveedor
-from modelos.Producto import Producto
 from flask import Flask, render_template, request, redirect, session
 from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario, ExisteUsuario, BuscarUsuario
+from controladores.CRUDProducto import ConsultarProductos, AgregarProducto,EditarProducto, EliminarProducto, ExisteProducto, BuscarIdProducto, BuscarProductoPorId
 from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor
-from controladores.CRUDProducto import ConsultarProductos, AgregarProducto,EditarProducto, EliminarProducto
 from controladores.CRUDProductoProveedor import BuscarProductosDelProveedor
 from miscelaneos.misc import ListaATabla, CifrarContrasena, SALT
 
@@ -18,6 +17,14 @@ proveedores_bd = []
 
 esta_registrado = False
 usuario_registrado = None
+
+'''Para debugging'''
+esta_registrado = True
+usuario_registrado = BuscarUsuario(123)
+'''No olvidar borrar'''
+
+'''Falta validar rol de usuario en diferentes páginas'''
+'''Falta corregir la validación de cuando se elimina un producto o un proveedor'''
 
 def TraerUsuarios():
     global usuarios_bd
@@ -99,8 +106,9 @@ def usuariosAgregar():
         password_nuevo = request.form['password']
         password_confirm = request.form['password2']
         rol_nuevo = request.form['rol']
-        if id_nuevo == '' or nombre_nuevo == '' or password_nuevo == '' or rol_nuevo == 'Seleccione':
-            session['error'] = 'Los campos de id, nombre, contraseña y rol son obligatorios'
+        imagen_usuario = request.files['imagen']
+        if id_nuevo == '' or nombre_nuevo == '' or password_nuevo == '' or rol_nuevo == 'Seleccione' or imagen_usuario.filename == '':
+            session['error'] = 'Todos los campos son obligatorios'
             return redirect('/usuarios/agregar')
         if password_nuevo != password_confirm:
             session['error'] = 'Las contraseñas deben de coincidir'
@@ -110,12 +118,10 @@ def usuariosAgregar():
         id_nuevo = int(id_nuevo)
         rol_nuevo = int(rol_nuevo)
         if ExisteUsuario(id_nuevo):
-            session['error'] = 'Id de usuario ya existente en el sistema'
+            session['error'] = 'Id \'%d\' de usuario ya existe en el sistema' % id_nuevo
             return redirect('/usuarios/agregar')
-        imagen_usuario = request.files['imagen']
-        if imagen_usuario.filename != '':
-            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
-            imagen_usuario.save(ruta_guardar)
+        ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_nuevo)+'.jpg')
+        imagen_usuario.save(ruta_guardar)
         AgregarUsuario(id_nuevo, nombre_nuevo, password_nuevo, rol_nuevo)
         TraerUsuarios()
         session['error'] = ''
@@ -173,7 +179,7 @@ def usuariosEditarusuario():
                     TraerUsuarios()
                 usuario_editar = BuscarUsuario(id_usuario)
                 return render_template('usuariosEditarusuario.html', usuario=usuario_editar, usuario_registrado=usuario_registrado)
-            session['error'] = 'Si deseas editar un usuario, por favor selecciona cual de todos'
+            session['error'] = 'Si deseas editar un usuario, selecciona cual de todos'
             return redirect('/usuarios/editar')
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
@@ -182,9 +188,9 @@ def usuariosEditarusuario():
 def usuariosEliminar():
     global esta_registrado, usuarios_bd, usuario_registrado
     if request.method == 'POST':
-        usuarios_eliminar = [u for u in request.form.values()]
+        usuarios_eliminar = [int(u) for u in request.form.values()]
         if len(usuarios_eliminar) == 0:
-            session['error'] = 'Si deseas eliminar usuarios, por favor seleccione todos los usuarios que desee eliminar. Sea cuidadoso'
+            session['error'] = 'Si deseas eliminar usuarios, seleccione todos los usuarios que desee eliminar. Sea cuidadoso'
             return redirect('/usuarios/eliminar')
         for id_usuario in usuarios_eliminar:
             EliminarUsuario(id_usuario)
@@ -203,10 +209,11 @@ def usuariosEliminar():
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
-@app.route('/productos', methods=['GET', 'POST'])
+@app.route('/productos/consultar', methods=['GET', 'POST'])
 def productos():
     global esta_registrado, usuario_registrado, productos_bd
     if esta_registrado:
+        session['error'] = ''
         if productos_bd == []:
             TraerProductos()
         return render_template('productos.html', usuario_registrado=usuario_registrado, productos = ListaATabla(productos_bd, 3))
@@ -220,38 +227,29 @@ def productosAgregar():
         nombre_producto = request.form['nombreProduct']
         descripcion_producto = request.form['DescProduct']
         calificacion_producto = request.form['calific']
-        cantMinima = request.form['canMin']
-        cantDisponible = request.form['canDisp']
-        imagenProduct = request.files['imagen']
-
-        if (nombre_producto == '' or descripcion_producto == '' or calificacion_producto == 'Seleccione' or cantMinima == '' or cantDisponible == ''):
-            mensaje = 'Error al intentar agregar el producto, uno o varios campos estaban vacíos. Por favor revise nuevamente los campos'
-            return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
-        if imagenProduct.filename =="":
-            mensaje = 'Error: Por favor seleccione una imagen para continuar'
-            return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
+        cantidad_minima = request.form['canMin']
+        cantidad_disponible = request.form['canDisp']
+        imagen_producto = request.files['imagen']
+        if nombre_producto == '' or descripcion_producto == '' or calificacion_producto == 'Seleccione' or cantidad_minima == '' or cantidad_disponible == '' or imagen_producto.filename == '':
+            session['error'] = 'Todos los campos son obligatorios'
+            return redirect('/productos/agregar')
         if productos_bd == []:
             TraerProductos()
         calificacion_producto = float(calificacion_producto)
-        cantMinima = int(cantMinima)
-        cantDisponible = int(cantDisponible)
-        id=0
-        for h in productos_bd:
-            if h.nombre == nombre_producto:
-                mensaje = 'Error: el producto ' + nombre_producto + ' ya existe en el sistema'
-                return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
-        AgregarProducto(Producto(id, nombre_producto, descripcion_producto, calificacion_producto, cantMinima, cantDisponible))
+        cantMinima = int(cantidad_minima)
+        cantDisponible = int(cantidad_disponible)
+        if ExisteProducto(nombre_producto):
+            session['error'] = 'El producto %s ya existe en el sistema' % nombre_producto.__repr__()
+            return redirect('/productos/agregar')
+        AgregarProducto(nombre_producto, descripcion_producto, calificacion_producto, cantMinima, cantDisponible)
+        ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(BuscarIdProducto(nombre_producto))+'.jpg')
+        imagen_producto.save(ruta_guardar)
         TraerProductos()
-        for h in productos_bd:
-            if h.nombre == nombre_producto:
-                id = h.id
-        if imagenProduct.filename!="":
-            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(id)+'.jpg')
-            imagenProduct.save(ruta_guardar)
-        return redirect('/productos')
+        session['error'] = ''
+        return redirect('/productos/consultar')
     if esta_registrado:
-        mensaje='False'
-        return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, mensaje=mensaje)
+        error = session.pop('error', '')
+        return render_template('productosAgregar.html', usuario_registrado=usuario_registrado, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
@@ -259,35 +257,30 @@ def productosAgregar():
 def productosEditar():
     global esta_registrado, usuario_registrado, productos_bd
     if request.method =="POST":
-        id = request.form['id']
+        id_producto = int(request.form['id'])
         nombre_producto = request.form['nombreProduct']
         descripcion_producto = request.form['DescProduct']
-        calificacion_producto = request.form['calific']
-        cantMinima = request.form['canMin']
-        cantDisponible = request.form['canDisp']
-        imagenProduct = request.files['imagen']
-
-        if (nombre_producto == '' or descripcion_producto == '' or calificacion_producto == 'Seleccione' or cantMinima == '' or cantDisponible == ''):
-            idProducto = int (request.form['id'])
-            producto_editar = [h for h in productos_bd if h.id == idProducto][0]
-            mensaje = 'Error al intentar editar el producto, uno o varios campos estaban vacíos. Por favor revise nuevamente'
-            return render_template('productosEditarproducto.html', producto=producto_editar, usuario_registrado=usuario_registrado, mensaje=mensaje)
-        if productos_bd == []:
-            TraerProductos()
-        id = int(id)
-        calificacion_producto = float(calificacion_producto)
-        cantMinima = int(cantMinima)
-        cantDisponible = int(cantDisponible)
-        EditarProducto(id, Producto(id, nombre_producto, descripcion_producto, calificacion_producto, cantMinima, cantDisponible))
+        calificacion_producto = float(request.form['calific'])
+        cantidad_minima = request.form['canMin']
+        cantidad_disponible = request.form['canDisp']
+        imagen_producto = request.files['imagen']
+        if nombre_producto == '' or descripcion_producto == '' or cantidad_minima == '' or cantidad_disponible == '':
+            session['error'] = 'Los campos nombre, descripción, cantidad mínima y cantidad disponible son obligatorios'
+            return redirect('/productos/editar')
+        session['error'] = ''
+        cantidad_minima = int(cantidad_minima)
+        cantidad_disponible = int(cantidad_disponible)
+        EditarProducto(id_producto, nombre_producto, descripcion_producto, calificacion_producto, cantidad_minima, cantidad_disponible)
+        if imagen_producto.filename != '':
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(id_producto)+'.jpg')
+            imagen_producto.save(ruta_guardar)
         TraerProductos()
-        if imagenProduct.filename!="":
-            ruta_guardar= os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(id)+'.jpg')
-            imagenProduct.save(ruta_guardar)
-        return redirect('/productos/editar')    
+        return redirect('/productos/consultar')
     if esta_registrado:
         if productos_bd == []:
             TraerProductos()
-        return render_template('productosEditar.html', usuario_registrado=usuario_registrado, productos = productos_bd)
+        error = session.pop('error', '')
+        return render_template('productosEditar.html', usuario_registrado=usuario_registrado, productos = productos_bd, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
@@ -295,13 +288,15 @@ def productosEditar():
 def productosEditarproducto():
     global esta_registrado, usuario_registrado, productos_bd
     if request.method =="POST":
-        idProducto = int (request.form['id'])
-        producto_editar = [h for h in productos_bd if h.id == idProducto][0]
-    if esta_registrado:
-        if productos_bd == []:
-            TraerProductos()
-        mensaje='False'
-        return render_template('productosEditarproducto.html', producto=producto_editar, usuario_registrado=usuario_registrado, productos = productos_bd, mensaje=mensaje)
+        if esta_registrado:
+            if len(request.form) == 1:
+                id_producto = int(request.form['id'])
+                if productos_bd == []:
+                    TraerProductos()
+                producto_editar = BuscarProductoPorId(id_producto)
+                return render_template('productosEditarproducto.html', producto=producto_editar, usuario_registrado=usuario_registrado)
+            session['error'] = 'Si deseas editar un producto, selecciona cual de todos'
+            return redirect('/productos/editar')
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
@@ -309,16 +304,22 @@ def productosEditarproducto():
 def productosEliminar():
     global esta_registrado, usuario_registrado, productos_bd
     if request.method == 'POST':
-        for producto in [h for h in request.form.values()]:
-            EliminarProducto(producto)
+        productos_eliminar = [int(p) for p in request.form.values()]
+        if len(productos_eliminar) == 0:
+            session['error'] = 'Si deseas eliminar productos, seleccione todos los productos que desee eliminar'
+            return redirect('/productos/eliminar')
+        for id_producto in productos_eliminar:
+            EliminarProducto(id_producto)
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Productos', str(id_producto)+'.jpg')
+            if os.path.exists(ruta_guardar):
+                os.remove(ruta_guardar)
         TraerProductos()
-        return redirect('/productos')
-    
-    
+        return redirect('/productos/consultar')
     if esta_registrado:
-        if productos_bd ==[]:
+        if productos_bd == []:
             TraerProductos()
-        return render_template('productosEliminar.html', productos = productos_bd, usuario_registrado=usuario_registrado)
+        error = session.pop('error', '')
+        return render_template('productosEliminar.html', productos=productos_bd, usuario_registrado=usuario_registrado, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 

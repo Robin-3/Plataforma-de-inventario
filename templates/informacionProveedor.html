@@ -10,11 +10,9 @@
         <div class="row justify-content-center">
           <div class="col-md-6 mb-2 ">
             <div class="card border-success mb-4"  >
-              <a href="#">
                 <div class="imagen-alto">
-                  <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg" alt="Proveedores"/>
+                  <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg" alt="Imagen de proveedor no encontrada"/>
                 </div>
-              </a>
             </div>
         </div>
         <div class="card-deck">
@@ -34,11 +32,9 @@
         {%for producto in producto_fila%}
           <div class="col-md-4 mb-2">
             <div class="card">
-              <a href="#">
                 <div class="imagen-alto">
-                  <img class="card-img-top" src="/static/img/Productos/{{producto.id}}.jpg" alt="Productos"/>
+                  <img class="card-img-top" src="/static/img/Productos/{{producto.id}}.jpg" alt="Imagen de producto no encontrada"/>
                 </div>
-              </a>
               <div class="card-body">
                 <h5 class="card-title text-center">{{producto.nombre}}</h5>
               </div>
