@@ -17,9 +17,6 @@ proveedores_bd = []
 esta_registrado = False
 usuario_registrado = None
 
-'''Falta validar los inputs por si se eliminan manualmente en html. Ej: <input type="number" max="2147483647"> -> <input type="number">'''
-'''Opcional: Cookies para sesión'''
-
 def TraerUsuarios(todos: bool = True):
     global usuarios_bd
     usuarios_bd.clear()
