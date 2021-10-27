@@ -41,7 +41,9 @@
                     <option selected>Seleccione</option>
                     <option value="0">Usuario final</option>
                     <option value="1">Administrador</option>
+                    {%if usuario_registrado.rol.id == 2%}
                     <option value="2">Super Administrador</option>
+                    {%endif%}
                 </select>
             </div>
         </div>

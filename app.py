@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, session
 from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario, ExisteUsuario, BuscarUsuario
 from controladores.CRUDProducto import ConsultarProductos, AgregarProducto,EditarProducto, EliminarProducto, ExisteProducto, BuscarIdProducto, BuscarProductoPorId
 from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor, ExisteProveedor, BuscarProveedor
-from controladores.CRUDProductoProveedor import BuscarProductosDelProveedor
+from controladores.CRUDProductoProveedor import BuscarProductosDelProveedor, EditarProductoProveedor, BuscarNoProductosDelProveedor
 from miscelaneos.misc import ListaATabla, CifrarContrasena, SALT
 
 app = Flask(__name__)
@@ -17,22 +17,18 @@ proveedores_bd = []
 esta_registrado = False
 usuario_registrado = None
 
-'''Para debugging'''
-esta_registrado = ExisteUsuario(123) # Colocar su id para registrarse
-if esta_registrado:
-    usuario_registrado = BuscarUsuario(123) # Colocar su id para registrarse
-print('No olvidar borrar')
-
-'''Falta validar rol de usuario en las diferentes páginas'''
-'''Falta validar los inputs por si se eliminan en html. Ej: <input type="number" max="2147483647"> -> <input type="number">'''
-'''Falta añadir la posibilidad de agregar o eliminar producto proveedor'''
+'''Falta validar los inputs por si se eliminan manualmente en html. Ej: <input type="number" max="2147483647"> -> <input type="number">'''
 '''Opcional: Cookies para sesión'''
 
-def TraerUsuarios():
+def TraerUsuarios(todos: bool = True):
     global usuarios_bd
     usuarios_bd.clear()
     for usuario in ConsultarUsuarios():
-        usuarios_bd.append(usuario)
+        if todos:
+            usuarios_bd.append(usuario)
+        else:
+            if usuario.rol.id != 2:
+                usuarios_bd.append(usuario)
 
 def TraerProductos():
     global productos_bd
@@ -51,6 +47,9 @@ def index():
     global esta_registrado, usuario_registrado
     esta_registrado = False
     usuario_registrado = None
+    TraerUsuarios()
+    TraerProductos()
+    TraerProveedores()
     error = session.pop('error', '')
     return render_template('index.html', error=error)
 
@@ -60,6 +59,9 @@ def dashboard():
     if request.method == 'POST':
         esta_registrado = False
         usuario_registrado = None
+        TraerUsuarios()
+        TraerProductos()
+        TraerProveedores()
         id_usuario = request.form['user']
         password = request.form['password']
         if id_usuario == '' and password == '':
@@ -161,8 +163,7 @@ def usuariosEditar():
         TraerUsuarios()
         return redirect('/usuarios/consultar')
     if esta_registrado:
-        if usuarios_bd == []:
-            TraerUsuarios()
+        TraerUsuarios(usuario_registrado.rol.id == 2)
         if usuario_registrado.rol.id != 0:
             error = session.pop('error', '')
             return render_template('usuariosEditar.html', usuarios=usuarios_bd, usuario_registrado=usuario_registrado, error=error)
@@ -203,8 +204,7 @@ def usuariosEliminar():
         return redirect('/usuarios/consultar')
     if esta_registrado:
         if usuario_registrado.rol.id != 0:
-            if usuarios_bd == []:
-                TraerUsuarios()
+            TraerUsuarios(usuario_registrado.rol.id == 2)
             error = session.pop('error', '')
             return render_template('usuariosEliminar.html', usuarios=usuarios_bd, usuario_registrado=usuario_registrado, error=error)
         return redirect('/dashboard')
@@ -332,6 +332,8 @@ def productosEliminar():
 def proveedores():
     global proveedores_bd, esta_registrado, usuario_registrado
     if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
         session['error'] = ''
         if proveedores_bd == []:
             TraerProveedores()
@@ -362,6 +364,8 @@ def proveedoresAgregar():
         session['error'] = ''
         return redirect('/proveedores/consultar')
     if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
         error = session.pop('error', '')
         return render_template('proveedoresAgregar.html', usuario_registrado=usuario_registrado, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
@@ -385,6 +389,8 @@ def proveedoresEditar():
         TraerProveedores()
         return redirect('/proveedores/consultar')
     if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
         if proveedores_bd == []:
             TraerProveedores()
         error = session.pop('error', '')
@@ -419,12 +425,14 @@ def proveedoresEliminar():
             return redirect('/proveedores/eliminar')
         for id_proveedor in proveedores_eliminar:
             EliminarProveedor(id_proveedor)
-            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_proveedor)+'.jpg')
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Proveedores', str(id_proveedor)+'.jpg')
             if os.path.exists(ruta_guardar):
                 os.remove(ruta_guardar)
         TraerProveedores()
         return redirect('/proveedores/consultar')
     if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
         if proveedores_bd ==[]:
             TraerProveedores()
         error = session.pop('error', '')
@@ -432,39 +440,73 @@ def proveedoresEliminar():
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
-@app.route('/proveedoresProductoagregar')
-def proveedoresProductoagregar():
-    global esta_registrado, usuario_registrado
-    if esta_registrado:
-        if productos_bd == []:
-            TraerProductos()
-        error = session.pop('error', '')
-        return render_template('proveedoresProductoagregar.html', productos=productos_bd, usuario_registrado=usuario_registrado, error=error)
-    session['error'] = 'Debes de registrarte para usar la aplicación'
-    return redirect('/')
-
-@app.route('/proveedoresProductoeliminar')
-def proveedoresProductoeliminar():
-    global esta_registrado, usuario_registrado
-    if esta_registrado:
-        if productos_bd == []:
-            TraerProductos()
-        error = session.pop('error', '')
-        return render_template('proveedoresProductoeliminar.html', productos=productos_bd, usuario_registrado=usuario_registrado, error=error)
-    session['error'] = 'Debes de registrarte para usar la aplicación'
-    return redirect('/')
-
-@app.route('/proveedores/consultar/proveedor/<int:id_proveedor>')
+@app.route('/proveedores/consultar/proveedor/<id_proveedor>', methods=['GET'])
 def proveedor(id_proveedor):
-    global proveedores_bd, esta_registrado, usuario_registrado
-    if esta_registrado:
-        if proveedores_bd == []:
-            TraerProveedores()
-        if ExisteProveedor(id_proveedor):
-            proveedor = BuscarProveedor(id_proveedor)
-            productos = BuscarProductosDelProveedor(proveedor.id)
-            return render_template('informacionProveedor.html', usuario_registrado=usuario_registrado, proveedor=proveedor, productos=ListaATabla(productos, 3))
+    try:
+        id_proveedor = int(id_proveedor)
+    except:
         return redirect('/proveedores/consultar')
+    global esta_registrado, usuario_registrado
+    if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
+        if not ExisteProveedor(id_proveedor):
+            return redirect('/proveedores/consultar')
+        proveedor = BuscarProveedor(id_proveedor)
+        productos = BuscarProductosDelProveedor(proveedor.id)
+        return render_template('informacionProveedor.html', usuario_registrado=usuario_registrado, proveedor=proveedor, productos=ListaATabla(productos, 3))
+    session['error'] = 'Debes de registrarte para usar la aplicación'
+    return redirect('/')
+
+@app.route('/proveedores/consultar/proveedor/<id_proveedor>/agregar', methods=['GET','POST'])
+def proveedoresProductoagregar(id_proveedor):
+    try:
+        id_proveedor = int(id_proveedor)
+    except:
+        return redirect('/proveedores/consultar')
+    global esta_registrado, usuario_registrado
+    if not ExisteProveedor(id_proveedor):
+        return redirect('/proveedores/consultar')
+    if request.method == 'POST':
+        productos_agregar = [int(u) for u in request.form.values()]
+        if len(productos_agregar) == 0:
+            session['error'] = 'Si deseas agregar productos del proveedor \'%d\', seleccione todos los productos que desee agregar' % id_proveedor
+            return redirect('/proveedores/consultar/proveedor/%d/agregar' % id_proveedor)
+        for id_producto in productos_agregar:
+            EditarProductoProveedor(id_proveedor, id_producto, True)
+        return redirect('/proveedores/consultar/proveedor/%d' % id_proveedor)
+    if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
+        error = session.pop('error', '')
+        productos = BuscarNoProductosDelProveedor(id_proveedor)
+        return render_template('proveedoresProductoagregar.html', id_proveedor=id_proveedor, productos=productos, usuario_registrado=usuario_registrado, error=error)
+    session['error'] = 'Debes de registrarte para usar la aplicación'
+    return redirect('/')
+
+@app.route('/proveedores/consultar/proveedor/<id_proveedor>/eliminar', methods=['GET','POST'])
+def proveedoresProductoeliminar(id_proveedor):
+    try:
+        id_proveedor = int(id_proveedor)
+    except:
+        return redirect('/proveedores/consultar')
+    global esta_registrado, usuario_registrado
+    if not ExisteProveedor(id_proveedor):
+        return redirect('/proveedores/consultar')
+    if request.method == 'POST':
+        productos_eliminar = [int(u) for u in request.form.values()]
+        if len(productos_eliminar) == 0:
+            session['error'] = 'Si deseas eliminar productos del proveedor \'%d\', seleccione todos los productos que desee eliminar' % id_proveedor
+            return redirect('/proveedores/consultar/proveedor/%d/eliminar' % id_proveedor)
+        for id_producto in productos_eliminar:
+            EditarProductoProveedor(id_proveedor, id_producto, False)
+        return redirect('/proveedores/consultar/proveedor/%d' % id_proveedor)
+    if esta_registrado:
+        if usuario_registrado.rol.id == 1:
+            return redirect('/dashboard')
+        error = session.pop('error', '')
+        productos = BuscarProductosDelProveedor(id_proveedor)
+        return render_template('proveedoresProductoeliminar.html', id_proveedor=id_proveedor, productos=productos, usuario_registrado=usuario_registrado, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 

@@ -22,10 +22,10 @@ def ConsultarProductosProveedores() -> List[ProductoProveedor]:
     BD.close()
     return productosProveedores
 
-def AgregarProductoProveedor(productoProveedor: ProductoProveedor) -> None:
-    datos: dict = eval(productoProveedor.__repr__())
-    datos['producto'] = productoProveedor.producto.id
-    datos['proveedor'] = productoProveedor.proveedor.id
+def AgregarProductoProveedor(idProveedor: int, idProducto: int) -> None:
+    datos: dict = {}
+    datos['producto'] = idProducto
+    datos['proveedor'] = idProveedor
 
     BD = conectar()
     BDcursor = BD.cursor()
@@ -34,18 +34,15 @@ def AgregarProductoProveedor(productoProveedor: ProductoProveedor) -> None:
     BDcursor.close()
     BD.close()
 
-def EditarProductoProveedor(idBuscar: int, productoProveedor: ProductoProveedor) -> None:
-    datos: dict = eval(productoProveedor.__repr__())
-    datos['id'] = idBuscar
-    datos['producto'] = productoProveedor.producto.id
-    datos['proveedor'] = productoProveedor.proveedor.id
+def EditarProductoProveedor(idBuscarProveedor: int, idBuscarProducto: int, agregar: bool) -> None:
+    if agregar:
+        AgregarProductoProveedor(idBuscarProveedor, idBuscarProducto)
+    else:
+        productoProveedor: ProductoProveedor = BuscarProductoProveedor(idBuscarProveedor, idBuscarProducto)
+        EliminarProductoProveedor(productoProveedor.id)
 
-    BD = conectar()
-    BDcursor = BD.cursor()
-    BDcursor.execute('update producto_proveedor set id_producto=%(producto)s, id_proveedor=%(proveedor)s where id=%(id)s', datos)
-    BD.commit()
-    BDcursor.close()
-    BD.close()
+def BuscarProductoProveedor(idBuscarProveedor: int, idBuscarProducto: int) -> ProductoProveedor:
+    return [pp for pp in ConsultarProductosProveedores() if pp.proveedor.id == idBuscarProveedor and pp.producto.id == idBuscarProducto][0]
 
 def EliminarProductoProveedor(idEliminar: int) -> None:
     BD = conectar()
@@ -65,4 +62,17 @@ def EliminarProductoProveedorPorProducto(idEliminar: int) -> None:
 
 def BuscarProductosDelProveedor(idProveedor: int) -> List[Producto]:
     return [d.producto for d in ConsultarProductosProveedores() if d.proveedor.id == idProveedor]
+
+def BuscarNoProductosDelProveedor(idProveedor: int) -> List[Producto]:
+    productosProveedor = BuscarProductosDelProveedor(idProveedor)
+    productos = ConsultarProductos()
+    productosFiltro = []
+    for p in productos:
+        insertar = True
+        for pp in productosProveedor:
+            if pp.id == p.id:
+                insertar = False
+        if insertar:
+            productosFiltro.append(p)
+    return productosFiltro
 

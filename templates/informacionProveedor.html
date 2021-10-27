@@ -3,13 +3,13 @@
 {% block titulo %} INFORMACIÓN PROVEEDOR {% endblock %}
 
 {% block content %}
-<br>  
+<br>
 
     <div class="container">
       <div class="row align-items-center">
         <div class="col">
           <p class="h5">AGREGAR PRODUCTOS</p>
-          <a href={{url_for('proveedoresProductoagregar')}} class="btn btn-success btn-lg">   +   </a><br>
+          <a href="/proveedores/consultar/proveedor/{{proveedor.id}}/agregar" class="btn btn-success btn-lg">   +   </a><br>
         </div>
         <div class="col">
           <div class="card">
@@ -26,9 +26,9 @@
         </div>
         <div class="col">
           <p class="h5">ELIMINAR PRODUCTOS</p>
-          <a href={{url_for('proveedoresProductoeliminar')}} class="btn btn btn-danger btn-lg">   -   </a><br>
+          <a href="/proveedores/consultar/proveedor/{{proveedor.id}}/eliminar" class="btn btn btn-danger btn-lg">   -   </a><br>
         </div>
-      </div>    
+      </div>
     </div>
     <br>
     <h4>PRODUCTOS DEL PROVEEDOR</h4>

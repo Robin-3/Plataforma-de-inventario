@@ -37,7 +37,9 @@
               <select class="form-select mb-3" id="rolusuario" name="rol" aria-label=".form-select-lg example">
                 <option value="0" {%if usuario.rol.id == 0%}selected{%endif%}>Usuario final</option>
                 <option value="1" {%if usuario.rol.id == 1%}selected{%endif%}>Administrador</option>
+                {%if usuario_registrado.rol.id == 2%}
                 <option value="2" {%if usuario.rol.id == 2%}selected{%endif%}>Super Administrador</option>
+                {%endif%}
                 </select>
             </div>
         </div>
