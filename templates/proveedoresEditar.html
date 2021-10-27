@@ -5,14 +5,15 @@
 {% block content %}
 <h3>EDITAR PROVEEDORES</h3>
 <div><br><br></div>
+{%if error != ''%}
+<div class="alert alert-danger" role="alert">{{error}}</div>
+{%endif%}
 <form action="{{url_for('proveedoresEditarproveedor')}}" method="POST">
 <table class="table table-hover table-striped">
     <thead class="table-dark">
         <tr>
             <th>
-                <span class="custom-checkbox">
-                    <input type="radio" id="selectAll">
-                    <label for="selectAll"></label>
+                <span>
                 </span>
             </th>
             <th scope="col">Id Proveedor</th>
@@ -20,16 +21,16 @@
         </tr>
     </thead>
     <tbody>
-        {%for Proveedor in Proveedores%}
+        {%for proveedor in proveedores%}
         <tr>
             <th>
                 <span class="custom-checkbox">
-                    <input type="radio" id="selectAll" name="id" value="{{Proveedor.id}}">
+                  <input type="radio" id="{{proveedor.id}}" name="id" value="{{proveedor.id}}">
                     <label for="selectAll"></label>
                 </span>
             </th>
-            <th scope="row">{{Proveedor.id}}</th>
-            <td>{{Proveedor.nombre}}</td>
+            <th scope="row"><label for="{{proveedor.id}}">{{proveedor.id}}</label></th>
+            <td><label for="{{proveedor.id}}">{{proveedor.nombre}}</label></td>
             </td>
         </tr>
         {%endfor%}
@@ -37,7 +38,7 @@
   </table>
   <div><br></div>
   <div>
-      <input type="submit" class="btn btn-success" value="Editar">
+    <input type="submit" class="btn btn-success" value="SELECCIONAR PROVEEDOR">
   </div>
 </form>
   <div><br><br><br></div>

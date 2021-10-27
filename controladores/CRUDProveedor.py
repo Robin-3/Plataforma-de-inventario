@@ -14,9 +14,9 @@ def ConsultarProveedores() -> List[Proveedor]:
     BD.close()
     return proveedores
 
-def AgregarProveedor(proveedor: Proveedor) -> None:
+def AgregarProveedor(idNuevo: int, nombreNuevo: str) -> None:
+    proveedor: Proveedor = Proveedor(idNuevo, nombreNuevo)
     datos: dict = eval(proveedor.__repr__())
-
     BD = conectar()
     BDcursor = BD.cursor()
     BDcursor.execute('insert into proveedor values (%(id)s, %(nombre)s)', datos)
@@ -24,9 +24,9 @@ def AgregarProveedor(proveedor: Proveedor) -> None:
     BDcursor.close()
     BD.close()
 
-def EditarProveedor(id: int, proveedor: Proveedor) -> None:
+def EditarProveedor(idNuevo: int, nombreNuevo: str) -> None:
+    proveedor: Proveedor = Proveedor(idNuevo, nombreNuevo)
     datos: dict = eval(proveedor.__repr__())
-    datos['id'] = id
 
     BD = conectar()
     BDcursor = BD.cursor()
@@ -35,10 +35,22 @@ def EditarProveedor(id: int, proveedor: Proveedor) -> None:
     BDcursor.close()
     BD.close()
 
-def EliminarProveedor(id: int) -> None:
+def EliminarProveedor(idEliminar: int) -> None:
+    from controladores.CRUDProductoProveedor import EliminarProductoProveedorPorProveedor
+    EliminarProductoProveedorPorProveedor(idEliminar)
     BD = conectar()
     BDcursor = BD.cursor()
-    BDcursor.execute('delete from proveedor where id_proveedor=%s', (id, ))
+    BDcursor.execute('delete from proveedor where id_proveedor=%s', (idEliminar, ))
     BD.commit()
     BDcursor.close()
     BD.close()
+
+def BuscarProveedor(idBuscar: int):
+    proveedores: List[Proveedor] = [proveedor for proveedor in ConsultarProveedores() if proveedor.id == idBuscar]
+    if len(proveedores) == 0:
+        return None
+    return proveedores[0]
+
+def ExisteProveedor(idBuscar: int) -> bool:
+    return BuscarProveedor(idBuscar) != None
+

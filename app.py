@@ -1,9 +1,8 @@
 import os
-from modelos.Proveedor import Proveedor
 from flask import Flask, render_template, request, redirect, session
 from controladores.CRUDUsuario import ConsultarUsuarios, AgregarUsuario, EditarUsuario, EliminarUsuario, ExisteUsuario, BuscarUsuario
 from controladores.CRUDProducto import ConsultarProductos, AgregarProducto,EditarProducto, EliminarProducto, ExisteProducto, BuscarIdProducto, BuscarProductoPorId
-from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor
+from controladores.CRUDProveedor import ConsultarProveedores, AgregarProveedor, EditarProveedor, EliminarProveedor, ExisteProveedor, BuscarProveedor
 from controladores.CRUDProductoProveedor import BuscarProductosDelProveedor
 from miscelaneos.misc import ListaATabla, CifrarContrasena, SALT
 
@@ -19,12 +18,15 @@ esta_registrado = False
 usuario_registrado = None
 
 '''Para debugging'''
-esta_registrado = True
-usuario_registrado = BuscarUsuario(123)
-'''No olvidar borrar'''
+esta_registrado = ExisteUsuario(123) # Colocar su id para registrarse
+if esta_registrado:
+    usuario_registrado = BuscarUsuario(123) # Colocar su id para registrarse
+print('No olvidar borrar')
 
-'''Falta validar rol de usuario en diferentes páginas'''
-'''Falta corregir la validación de cuando se elimina un producto o un proveedor'''
+'''Falta validar rol de usuario en las diferentes páginas'''
+'''Falta validar los inputs por si se eliminan en html. Ej: <input type="number" max="2147483647"> -> <input type="number">'''
+'''Falta añadir la posibilidad de agregar o eliminar producto proveedor'''
+'''Opcional: Cookies para sesión'''
 
 def TraerUsuarios():
     global usuarios_bd
@@ -259,6 +261,9 @@ def productosEditar():
     if request.method =="POST":
         id_producto = int(request.form['id'])
         nombre_producto = request.form['nombreProduct']
+        if ExisteProducto(nombre_producto):
+            session['error'] = 'El producto %s ya existe en el sistema' % nombre_producto.__repr__()
+            return redirect('/productos/editar')
         descripcion_producto = request.form['DescProduct']
         calificacion_producto = float(request.form['calific'])
         cantidad_minima = request.form['canMin']
@@ -323,73 +328,83 @@ def productosEliminar():
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
-@app.route('/proveedores', methods=['GET'])
+@app.route('/proveedores/consultar', methods=['GET'])
 def proveedores():
     global proveedores_bd, esta_registrado, usuario_registrado
     if esta_registrado:
+        session['error'] = ''
         if proveedores_bd == []:
             TraerProveedores()
-        return render_template('proveedores.html', usuario_registrado=usuario_registrado, proveedores = ListaATabla(proveedores_bd, 2))
+        return render_template('proveedores.html', usuario_registrado=usuario_registrado, proveedores=ListaATabla(proveedores_bd, 2))
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
 @app.route('/proveedores/agregar', methods=['GET','POST'])
 def proveedoresAgregar():
     global esta_registrado, usuario_registrado
-    if request.method =="POST":
-        id_nuevoprov = request.form['id']
-        nombre_nuevoprov = request.form['nombre']
-        if (id_nuevoprov == '' or nombre_nuevoprov == ''):
+    if request.method == 'POST':
+        id_proveedor = request.form['id']
+        nombre_proveedor = request.form['nombre']
+        imagen_proveedor = request.files['imagen']
+        if id_proveedor == '' or nombre_proveedor == '' or imagen_proveedor.filename == '':
+            session['error'] = 'Todos los campos son obligatorios'
             return redirect('/proveedores/agregar')
         if proveedores_bd == []:
             TraerProveedores()
-        id_nuevoprov = int(id_nuevoprov)
-        if len([u for u in proveedores_bd if u.id == id_nuevoprov]) == 1:
+        id_proveedor = int(id_proveedor)
+        if ExisteProveedor(id_proveedor):
+            session['error'] = 'Id \'%d\' de proveedor ya existe en el sistema' % id_proveedor
             return redirect('/proveedores/agregar')
-        imagen_prov = request.files['imagen']
-        if imagen_prov.filename != '':
-            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/proveedores', str(id_nuevoprov)+'.jpg')
-            imagen_prov.save(ruta_guardar)
-        AgregarProveedor(Proveedor(id_nuevoprov, nombre_nuevoprov))
+        ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Proveedores', str(id_proveedor)+'.jpg')
+        imagen_proveedor.save(ruta_guardar)
+        AgregarProveedor(id_proveedor, nombre_proveedor)
         TraerProveedores()
-        return redirect('/proveedores')
+        session['error'] = ''
+        return redirect('/proveedores/consultar')
     if esta_registrado:
-        return render_template('proveedoresAgregar.html', usuario_registrado=usuario_registrado)
+        error = session.pop('error', '')
+        return render_template('proveedoresAgregar.html', usuario_registrado=usuario_registrado, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
 @app.route('/proveedores/editar', methods=['GET','POST'])
 def proveedoresEditar():
-    global proveedor_bd,esta_registrado, usuario_registrado
-    if request.method == "POST":
-        id_nuevoprov = int(request.form["id"])
-        nombre_nuevoprov = request.form["nombre"]
-        if nombre_nuevoprov == "":
-            return redirect("/proveedores/editar")
-        EditarProveedor (id_nuevoprov, Proveedor(55,nombre_nuevoprov))
-        imagen_prov = request.files['imagen']
-        if imagen_prov.filename != '':
-            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/proveedores', str(id_nuevoprov)+'.jpg')
-            imagen_prov.save(ruta_guardar)
+    global proveedor_bd, esta_registrado, usuario_registrado
+    if request.method == 'POST':
+        id_proveedor = int(request.form["id"])
+        nombre_proveedor = request.form["nombre"]
+        if nombre_proveedor == '':
+            session['error'] = 'El campo nombre es obligatorio'
+            return redirect('/proveedores/editar')
+        session['error'] = ''
+        EditarProveedor(id_proveedor, nombre_proveedor)
+        imagen_proveedor = request.files['imagen']
+        if imagen_proveedor.filename != '':
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Proveedores', str(id_proveedor)+'.jpg')
+            imagen_proveedor.save(ruta_guardar)
         TraerProveedores()
-        return redirect('/proveedores')
+        return redirect('/proveedores/consultar')
     if esta_registrado:
         if proveedores_bd == []:
             TraerProveedores()
-        return render_template('proveedoresEditar.html', usuario_registrado=usuario_registrado,Proveedores= proveedores_bd)
+        error = session.pop('error', '')
+        return render_template('proveedoresEditar.html', usuario_registrado=usuario_registrado,proveedores=proveedores_bd, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
 @app.route('/proveedores/editar/proveedor', methods = ['POST'])
 def proveedoresEditarproveedor():
-    global proveedor_bd,esta_registrado, usuario_registrado
-    if request.method =="POST":
-        id_nuevoprov = int (request.form['id'])
+    global proveedor_bd, esta_registrado, usuario_registrado
+    if request.method =='POST':
         if esta_registrado:
-            if proveedores_bd == []:
-                TraerProveedores()
-            proveedores_editar = [u for u in proveedores_bd if u.id == id_nuevoprov][0]
-            return render_template('proveedoresEditarproveedor.html', proveedor=proveedores_editar, usuario_registrado=usuario_registrado)
+            if len(request.form) == 1:
+                id_proveedor = int(request.form['id'])
+                if proveedores_bd == []:
+                    TraerProveedores()
+                proveedor_editar = BuscarProveedor(id_proveedor)
+                return render_template('proveedoresEditarproveedor.html', proveedor=proveedor_editar, usuario_registrado=usuario_registrado)
+            session['error'] = 'Si deseas editar un proveedor, selecciona cual de todos'
+            return redirect('/proveedores/editar')
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
@@ -398,14 +413,22 @@ def proveedoresEditarproveedor():
 def proveedoresEliminar():
     global proveedores_bd,esta_registrado, usuario_registrado
     if request.method == 'POST':
-        for proveedor in [p for p in request.form.values()]:
-            EliminarProveedor(proveedor)
+        proveedores_eliminar = [int(p) for p in request.form.values()]
+        if len(proveedores_eliminar) == 0:
+            session['error'] = 'Si deseas eliminar proveedores, seleccione todos los proveedores que desee eliminar'
+            return redirect('/proveedores/eliminar')
+        for id_proveedor in proveedores_eliminar:
+            EliminarProveedor(id_proveedor)
+            ruta_guardar = os.path.join(app.config['UPLOAD_FOLDER']+'/Usuarios', str(id_proveedor)+'.jpg')
+            if os.path.exists(ruta_guardar):
+                os.remove(ruta_guardar)
         TraerProveedores()
-        return redirect('/proveedores')
+        return redirect('/proveedores/consultar')
     if esta_registrado:
         if proveedores_bd ==[]:
             TraerProveedores()
-        return render_template('proveedoresEliminar.html', usuario_registrado=usuario_registrado, proveedores = proveedores_bd)
+        error = session.pop('error', '')
+        return render_template('proveedoresEliminar.html', usuario_registrado=usuario_registrado, proveedores=proveedores_bd, error=error)
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
@@ -415,8 +438,11 @@ def proveedor(id_proveedor):
     if esta_registrado:
         if proveedores_bd == []:
             TraerProveedores()
-        proveedor = [p for p in proveedores_bd if p.id == id_proveedor][0]
-        productos = BuscarProductosDelProveedor(proveedor.id)
-        return render_template('informacionProveedor.html', usuario_registrado=usuario_registrado, proveedor=proveedor, productos=ListaATabla(productos, 3))
+        if ExisteProveedor(id_proveedor):
+            proveedor = BuscarProveedor(id_proveedor)
+            productos = BuscarProductosDelProveedor(proveedor.id)
+            return render_template('informacionProveedor.html', usuario_registrado=usuario_registrado, proveedor=proveedor, productos=ListaATabla(productos, 3))
+        return redirect('/proveedores/consultar')
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
+

@@ -7,16 +7,19 @@
 <br><br>
 <form action={{url_for('proveedoresAgregar')}} method = "post" enctype="multipart/form-data">
     <div class="container text-center col-sm-9">
+      {%if error != ''%}
+      <div class="alert alert-danger" role="alert">{{error}}</div>
+      {%endif%}
          <div class="mb-3 row">
-            <label for="idProveedorlabel" class="col-sm-4 col-form-label">Id Proveedor</label>
+            <label for="idProveedor" class="col-sm-4 col-form-label">Id Proveedor</label>
             <div class="col-sm-8">
-                <input type="number" class="form-control" id="idProveedor" name="id">
+              <input type="number" min="1" max="2147483647" class="form-control" id="idProveedor" name="id">
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="Nombrelabel" class="col-sm-4 col-form-label">Nombre</label>
+          <label for="nombreProveedor" class="col-sm-4 col-form-label">Nombre</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="nombreProveedor" name="nombre">
+              <input type="text" minlength="3" maxlength="20" class="form-control" id="nombreProveedor" name="nombre">
             </div>
         </div>
         <div class="mb-3 row">
@@ -27,7 +30,7 @@
           </div>
         <div><br></div>
         <div>
-            <input type="submit" class="btn btn-success" value = "Guardar">
+          <input type="submit" class="btn btn-success" value = "GUARDAR PROVEEDOR">
         </div>
         <div><br><br><br></div>
     </div>
