@@ -3,29 +3,35 @@
 {% block titulo %} INFORMACIÓN PROVEEDOR {% endblock %}
 
 {% block content %}
-  <!-- Inicia Section 1 -->
-  <section class="container my-5" text-align= "center" >
-    <!-- Inicia Cards 1-->
-      <div class="card-deck">
-        <div class="row justify-content-center">
-          <div class="col-md-6 mb-2 ">
-            <div class="card border-success mb-4"  >
-                <div class="imagen-alto">
-                  <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg" alt="Imagen de proveedor no encontrada"/>
-                </div>
-            </div>
+<br>  
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col">
+          <p class="h5">AGREGAR PRODUCTOS</p>
+          <a href={{url_for('proveedoresProductoagregar')}} class="btn btn-success btn-lg">   +   </a><br>
         </div>
-        <div class="card-deck">
-            <div class="row justify-content-center">
-              <div class="col-md-4 mb-2 ">
-                <div class="card border-success mb-4"  >
-                  <h5 class="card-title text-center">{{proveedor.nombre}}</h5>
-                  <p class="card-text text-justify">{{proveedor.id}}</p>
-                    </div>
-                </div>
+        <div class="col">
+          <div class="card">
+            <div class="imagen-alto">
+              <img class="card-img-top" src="/static/img/Proveedores/{{proveedor.id}}.jpg")}} alt="Imagen de producto no encontrada"/>
             </div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{proveedor.nombre}}</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{proveedor.id}}</li>
+              </ul>
+            </div>
+          </div>
         </div>
-<h4>PRODUCTOS DEL PROVEEDOR</h4>
+        <div class="col">
+          <p class="h5">ELIMINAR PRODUCTOS</p>
+          <a href={{url_for('proveedoresProductoeliminar')}} class="btn btn btn-danger btn-lg">   -   </a><br>
+        </div>
+      </div>    
+    </div>
+    <br>
+    <h4>PRODUCTOS DEL PROVEEDOR</h4>
     {%for producto_fila in productos%}
     <div class="card-deck">
       <div class="row">

@@ -432,6 +432,28 @@ def proveedoresEliminar():
     session['error'] = 'Debes de registrarte para usar la aplicación'
     return redirect('/')
 
+@app.route('/proveedoresProductoagregar')
+def proveedoresProductoagregar():
+    global esta_registrado, usuario_registrado
+    if esta_registrado:
+        if productos_bd == []:
+            TraerProductos()
+        error = session.pop('error', '')
+        return render_template('proveedoresProductoagregar.html', productos=productos_bd, usuario_registrado=usuario_registrado, error=error)
+    session['error'] = 'Debes de registrarte para usar la aplicación'
+    return redirect('/')
+
+@app.route('/proveedoresProductoeliminar')
+def proveedoresProductoeliminar():
+    global esta_registrado, usuario_registrado
+    if esta_registrado:
+        if productos_bd == []:
+            TraerProductos()
+        error = session.pop('error', '')
+        return render_template('proveedoresProductoeliminar.html', productos=productos_bd, usuario_registrado=usuario_registrado, error=error)
+    session['error'] = 'Debes de registrarte para usar la aplicación'
+    return redirect('/')
+
 @app.route('/proveedores/consultar/proveedor/<int:id_proveedor>')
 def proveedor(id_proveedor):
     global proveedores_bd, esta_registrado, usuario_registrado
