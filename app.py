@@ -258,9 +258,10 @@ def productosEditar():
     if request.method =="POST":
         id_producto = int(request.form['id'])
         nombre_producto = request.form['nombreProduct']
-        if ExisteProducto(nombre_producto):
-            session['error'] = 'El producto %s ya existe en el sistema' % nombre_producto.__repr__()
-            return redirect('/productos/editar')
+        #HHH Esta validación no debería estar pues estamos en edición del producto y no en agregar
+        #if ExisteProducto(nombre_producto):
+        #    session['error'] = 'El producto %s ya existe en el sistema' % nombre_producto.__repr__()
+        #    return redirect('/productos/editar')
         descripcion_producto = request.form['DescProduct']
         calificacion_producto = float(request.form['calific'])
         cantidad_minima = request.form['canMin']
